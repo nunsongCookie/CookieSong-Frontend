@@ -1,0 +1,43 @@
+/* Reset CSS for consistent styling across devices */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Set default font size and family */
+html {
+  font-size: 16px; /* Base font size */
+  font-family: Arial, sans-serif;
+  background-color: #F3F3F3; /* Set background color */
+}
+
+/* Mobile-first body styling */
+body {
+  background-color: #F3F3F3;
+  color: #333; /* Default text color */
+  line-height: 1.5;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Make content responsive */
+#root {
+  max-width: 480px; /* Mobile web width */
+  margin: 0 auto; /* Center content */
+  padding: 16px;
+}
+
+/* For smaller screens */
+@media (max-width: 480px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+/* For larger tablets */
+@media (min-width: 481px) and (max-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
