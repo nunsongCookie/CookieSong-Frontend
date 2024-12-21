@@ -52,15 +52,15 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
-        
-		 #code deploy용 env file 생성
+
+      #code deploy용 env file 생성
       - name: Create env file
         run: |
           echo "ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}" > scripts/env.sh
           echo "ECR_REPOSITORY=${{ secrets.ECR_REPO }}" >> scripts/env.sh
           echo "IMAGE_TAG=${{ github.sha }}" >> scripts/env.sh
 			    
-		  # S3에 스크립트 업로드(code deploy)
+      # S3에 스크립트 업로드(code deploy)
       - name: upload to s3
         run: |
           zip -r deploy-$IMAGE_TAG.zip ./scripts appspec.yml
