@@ -1,0 +1,77 @@
+# ci.yml
+name: Deploy WEB
+
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+    
+env:
+  IMAGE_TAG: ${{ github.sha }}
+  AWS_REGION: ap-northeast-2
+  ECR_REPOSITORY: ${{ secrets.ECR_REPO }}
+  S3_BUCKET_NAME: ${{ secrets.S3_BUCKET }} 
+  CODE_DEPLOY_APPLICATION_NAME : ${{ secrets.CODE_DEPLOY_APPLICATION_NAME }} 
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME : ${{ secrets.DEPLOYMENT_GROUP_NAME }} 
+  
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # 실행될 인스턴스 OS와 버전
+    
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
+      # 기본 체크아웃
+      # 지정한 저장소(현재 REPO)에서 코드를 워크플로우 환경으로 가져오도록 하는 github action
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # AWS credentials
+      - name: AWS IAM 사용자 설정
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+		      
+      # ECR login
+      - name: Login to ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        
+      # Docker build
+      - name: Docker build & push
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+        
+		 #code deploy용 env file 생성
+      - name: Create env file
+        run: |
+          echo "ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}" > scripts/env.sh
+          echo "ECR_REPOSITORY=${{ secrets.ECR_REPO }}" >> scripts/env.sh
+          echo "IMAGE_TAG=${{ github.sha }}" >> scripts/env.sh
+			    
+		  # S3에 스크립트 업로드(code deploy)
+      - name: upload to s3
+        run: |
+          zip -r deploy-$IMAGE_TAG.zip ./scripts appspec.yml
+          aws s3 cp --region ap-northeast-2 --acl private ./deploy-$IMAGE_TAG.zip s3://$S3_BUCKET_NAME
+      
+      # Deploy
+      # S3에 업로드 했던 내용을 가지고 와서, code deploy 실행
+      - name: Deploy
+        run: |
+          aws deploy create-deployment \
+          --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
+          --deployment-config-name CodeDeployDefault.AllAtOnce \
+          --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
+          --s3-location bucket=$S3_BUCKET_NAME,key=deploy-$IMAGE_TAG.zip,bundleType=zip
