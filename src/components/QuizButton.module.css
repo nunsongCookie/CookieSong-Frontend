@@ -1,0 +1,43 @@
+/* 버튼 컨테이너 스타일 */
+.buttonContainer {
+  display: flex;
+  justify-content: space-between; /* 버튼 간 간격 */
+  align-items: center; /* 세로 가운데 정렬 */
+  width: 100%;
+  max-width: 400px; /* 최대 너비 제한 */
+  margin: 16px auto 0; /* 상단 여백 추가 */
+  padding: 0 16px; /* 좌우 여백 */
+  box-sizing: border-box;
+}
+
+/* 이전 버튼 스타일 */
+.previousButton {
+  padding: 12px 24px; /* 버튼 내부 여백 */
+  background-color: #CFDBE8; /* 연한 회색 */
+  border: none;
+  border-radius: 8px; /* 둥근 모서리 */
+  font-size: 1rem; /* 글자 크기 */
+  color: #333; /* 텍스트 색상 */
+  cursor: pointer; /* 클릭 가능한 버튼 */
+  transition: background-color 0.3s ease;
+}
+
+.previousButton:hover {
+  background-color: #e0e0e0; /* 호버 시 색상 */
+}
+
+/* 다음 버튼 스타일 */
+.nextButton {
+  padding: 12px 24px; /* 버튼 내부 여백 */
+  background-color: #0a70d9; /* 파란색 */
+  border: none;
+  border-radius: 8px; /* 둥근 모서리 */
+  font-size: 1rem; /* 글자 크기 */
+  color: #fff; /* 텍스트 색상 */
+  cursor: pointer; /* 클릭 가능한 버튼 */
+  transition: background-color 0.3s ease;
+}
+
+.nextButton:hover {
+  background-color: #005bb5; /* 호버 시 색상 */
+}

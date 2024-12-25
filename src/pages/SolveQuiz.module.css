@@ -1,0 +1,152 @@
+.div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100vh;
+    background-color: #f3f3f3;
+    padding: 16px;
+    box-sizing: border-box;
+    position: relative;
+  }
+  
+  .questionContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin-top: 24px;
+    margin-bottom: 40px;
+    width: 90%;
+    max-width: 400px;
+  }
+  
+  .questionNumber {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 12px;
+  }
+  
+  .questionText {
+    font-size: 1.3rem;
+    font-weight: normal;
+    color: #555;
+  }
+  
+  .correctAnswerSection {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 90%;
+    max-width: 400px;
+    margin-bottom: 24px;
+    gap: 8px;
+  }
+  
+  .correctAnswerTitle {
+    font-size: 1.2rem;
+    font-weight: normal;
+    color: #333;
+    text-align: left;
+  }
+  
+  .correctAnswerInput {
+    width: 100%;
+    height: 40px;
+    padding: 8px;
+    font-size: 1rem;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    outline: none;
+  }
+  
+  .correctAnswerInput:focus {
+    border-color: #0a70d9;
+  }
+  
+  .answerSection {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 90%;
+    max-width: 400px;
+    gap: 16px;
+  }
+  
+  .answerTitle {
+    font-size: 1.2rem;
+    font-weight: normal;
+    color: #333;
+    text-align: left;
+  }
+  
+  .inputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+  
+  .input {
+    width: 100%;
+    height: 40px;
+    padding: 8px;
+    font-size: 1rem;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    outline: none;
+  }
+  
+  .input:focus {
+    border-color: #0a70d9;
+  }
+  
+  .buttonWrapper {
+    position: absolute;
+    bottom: 36px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 0 16px;
+    box-sizing: border-box;
+  }
+  
+  .progressBar {
+    width: 90%;
+    max-width: 600px;
+    height: 8px;
+    background-color: #d8e3f0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 16px auto;
+  }
+  
+  .progress {
+    width: 9%;
+    height: 100%;
+    background-color: #0a70d9;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+  }
+  
+  .optionSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    width: 90%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 16px 0;
+  }
+  
