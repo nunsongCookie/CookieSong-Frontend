@@ -1,0 +1,68 @@
+@import url("https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;700&display=swap");
+@font-face {
+  font-family: "Pretendard";
+  src: url("/public/Pretendard-Regular.woff");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Pretendard";
+  src: url("/public/Pretendard-Medium.woff");
+  font-weight: 500;
+}
+@font-face {
+  font-family: "Pretendard";
+  src: url("/public/Pretendard-Bold.woff");
+  font-weight: 700;
+}
+
+body {
+  margin: 0;
+  line-height: normal;
+}
+:root {
+  /* fonts */
+  --font-pretendard: Pretendard;
+
+  /* font sizes */
+  --font-size-lg: 18px;
+  --font-size-base: 16px;
+  --font-size-29xl: 48px;
+
+  /* Colors */
+  --color-whitesmoke-100: #f3f3f3;
+  --color-black: #000;
+  --color-gray-100: #fdfdfd;
+  --color-gray-200: #0d141c;
+  --color-lavender: #cfdbe8;
+  --color-white: #fff;
+
+  /* Gaps */
+  --gap-mini: 15px;
+  --gap-smi-1: 12.1px;
+  --gap-xs: 12px;
+  --gap-11xl-5: 30.5px;
+  --gap-xl: 20px;
+  --gap-3xs: 10px;
+
+  /* Paddings */
+  --padding-base: 16px;
+  --padding-2xl: 21px;
+  --padding-sm: 14px;
+  --padding-4xl: 23px;
+  --padding-3xl: 22px;
+  --padding-lgi: 19px;
+  --padding-5xl: 24px;
+  --padding-9xs: 4px;
+  --padding-12xs: 1px;
+  --padding-3xs: 10px;
+  --padding-6xl: 25px;
+  --padding-7xl: 26px;
+  --padding-42xl: 61px;
+  --padding-2xs-5: 10.5px;
+  --padding-16xl: 35px;
+  --padding-8xs: 5px;
+  --padding-lg: 18px;
+
+  /* Border radiuses */
+  --br-11xl: 30px;
+}

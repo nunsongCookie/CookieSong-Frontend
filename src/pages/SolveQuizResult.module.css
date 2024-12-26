@@ -1,0 +1,113 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 16px;
+    background-color: #f3f3f3;
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+  
+  .sectionTitle {
+    width: 90%;
+    border-top: 4px double #000; /* 두 줄 상단 테두리 */
+    border-bottom: 4px double #000; /* 두 줄 하단 테두리 */
+    text-align: center;
+    margin: 24px 0; /* 상하 간격 확대 */
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 8px 0; /* 테두리와 글자 사이 간격 확대 */
+    line-height: 1.5; /* 두 줄짜리 테두리 사이 간격 확대 */
+  }
+  
+  
+  .answerTableWrapper {
+    margin-bottom: 0px;
+    width: 90%;
+    max-width: 600px;
+    border-collapse: collapse;
+  }
+  
+  .answerTable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .answerTable th,
+  .answerTable td {
+    border: 1px solid #000;
+    padding: 8px;
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  .answerTable th {
+    position: relative; /* 이미지가 겹치도록 설정 */
+    background-color: #e5e5e5;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .reportTitle {
+    margin: 48px 0 16px; /* Answer Table과의 간격을 벌림 */
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .tableWrapper {
+    border: 1px solid #000;
+    margin-bottom: 24px;
+    width: 90%;
+    max-width: 400px;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table th,
+  .table td {
+    border: 1px solid #000;
+    padding: 8px;
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  /* 첫 번째 줄 배경색 */
+  .table thead tr {
+    background-color: #E5E5E5;
+  }
+
+  /* 두 번째 줄 배경색 */
+  .table tbody tr {
+    background-color: #FFFFFF;
+  }
+  
+  .buttonWrapper {
+    margin-top: 16px;
+  }
+  
+  .cellContent {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .resultImage {
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-40%);
+    width: 60px; /* 이미지 크기 확대 */
+    height: 40px;
+  }
+
+  .imageWrapper {
+    position: relative;
+    display: inline-block;
+  }
+  
