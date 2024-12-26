@@ -63,7 +63,7 @@ jobs:
       - name: upload to s3
         run: |
           zip -r deploy-$IMAGE_TAG.zip ./scripts appspec.yml
-          aws s3 cp --region ap-northeast-2 --acl private ./deploy-$IMAGE_TAG.zip s3://$S3_BUCKET_NAME/$REPO_NAME
+          aws s3 cp --region ap-northeast-2 --acl private ./deploy-$IMAGE_TAG.zip s3://$S3_BUCKET_NAME/$ECR_REPOSITORY
       
       # Deploy
       # S3에 업로드 했던 내용을 가지고 와서, code deploy 실행
@@ -73,4 +73,4 @@ jobs:
           --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
           --deployment-config-name CodeDeployDefault.AllAtOnce \
           --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
-          --s3-location bucket=$S3_BUCKET_NAME,key=$REPO_NAME/deploy-$IMAGE_TAG.zip,bundleType=zip
+          --s3-location bucket=$S3_BUCKET_NAME,key=$ECR_REPOSITORY/deploy-$IMAGE_TAG.zip,bundleType=zip
