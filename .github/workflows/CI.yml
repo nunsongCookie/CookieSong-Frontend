@@ -16,6 +16,7 @@ env:
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME : ${{ secrets.DEPLOYMENT_GROUP_NAME }} 
   
 permissions:
+  id-token: write
   contents: read
 
 jobs:
