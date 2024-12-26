@@ -12,10 +12,10 @@ const Frame: FunctionComponent = () => {
     setUserName(event.target.value);
   };
 
-  // 유저 생성 및 페이지 이동 
+  // 유저, 퀴즈 생성 및 페이지 이동 
   const handleStartQuiz = async () => {
     try{
-      const response = await fetch("http://localhost:8080/api/users", {
+      const userResponse = await fetch("http://localhost:8080/api/users", {
         method : "POST",
         headers: {
           "Content-Type": "application/json",
@@ -23,17 +23,35 @@ const Frame: FunctionComponent = () => {
         body: JSON.stringify({name: userName}),
       });
 
-      if(!response.ok){
+      if(!userResponse.ok){
         throw new Error("유저 생성에 실패했습니다.");
       }
 
-      const data = await response.json();
-      console.log("User created:", data);
-      navigate("/make-quiz");
+      const userData = await userResponse.json();
+      console.log("User created:", userData);
+
+      const creatorUserId = userData.id;
+
+      // 퀴즈 생성
+      const quizResponse = await fetch("http://localhost:8080/api/quizzes", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({creatorUserId: creatorUserId}),
+      });
+
+      if(!quizResponse.ok){
+        throw new Error("퀴즈 생성에 실패했습니다.");
+      }
+
+      const quizData = await quizResponse.json();
+      console.log("Quiz created:", quizData);
+
+      // 퀴즈 페이지 이동 
+      navigate(`/make-quiz/${quizData.quizId}`);
     }
     catch(error){
       console.error("Error: ", error);
-      alert("유저 생성에 실패했습니다!");
+      alert("퀴즈 생성에 실패했습니다!");
     }
   };
 
