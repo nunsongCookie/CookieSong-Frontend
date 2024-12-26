@@ -10,8 +10,8 @@ on:
 env:
   IMAGE_TAG: ${{ github.sha }}
   AWS_REGION: ap-northeast-2
-  ECR_REPOSITORY: ${{ secrets.ECR_REPO }}
-  S3_BUCKET_NAME: ${{ secrets.S3_BUCKET }} 
+  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+  S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }} 
   CODE_DEPLOY_APPLICATION_NAME : ${{ secrets.CODE_DEPLOY_APPLICATION_NAME }} 
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME : ${{ secrets.DEPLOYMENT_GROUP_NAME }} 
   
