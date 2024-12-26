@@ -1,13 +1,40 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import styles from "./MakeQuizMain.module.css";
 
 const Frame: FunctionComponent = () => {
+  const [userName, setUserName] = useState("");
   const navigate = useNavigate();
 
-  const handleStartQuiz = () => {
-    navigate("/make-quiz");
+  // 유저 이름 입력
+  const handleUserNameChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setUserName(event.target.value);
+  };
+
+  // 유저 생성 및 페이지 이동 
+  const handleStartQuiz = async () => {
+    try{
+      const response = await fetch("http://localhost:8080/api/users", {
+        method : "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({name: userName}),
+      });
+
+      if(!response.ok){
+        throw new Error("유저 생성에 실패했습니다.");
+      }
+
+      const data = await response.json();
+      console.log("User created:", data);
+      navigate("/make-quiz");
+    }
+    catch(error){
+      console.error("Error: ", error);
+      alert("유저 생성에 실패했습니다!");
+    }
   };
 
   return (
@@ -22,7 +49,15 @@ const Frame: FunctionComponent = () => {
       </div>
 
       <div className={styles.inputContainer}>
-        <textarea className={styles.textboxName} rows={3} cols={9} />
+        {/* <textarea className={styles.textboxName} rows={3} cols={9} /> */}
+        <textarea
+          className={styles.textboxName}
+          rows={3}
+          cols={9}
+          value={userName} // 상태와 연결
+          onChange={handleUserNameChange} // 상태 업데이트
+          placeholder="유저 이름을 입력하세요"
+        />
         <div className={styles.titleContainer}>
           <h1 className={styles.h1}>영역</h1>
         </div>
