@@ -31,18 +31,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # AWS credentials
+    # AWS credentials
       - name: AWS IAM 사용자 설정
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          role-to-assume: ${{ secrets.IAMARN }}
           aws-region: ${{ env.AWS_REGION }}
 
       # ECR login
       - name: Login to ECR
         id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+        uses: aws-actions/amazon-ecr-login@v2
         
       # Docker build
       - name: Docker build & push
@@ -64,7 +63,7 @@ jobs:
       - name: upload to s3
         run: |
           zip -r deploy-$IMAGE_TAG.zip ./scripts appspec.yml
-          aws s3 cp --region ap-northeast-2 --acl private ./deploy-$IMAGE_TAG.zip s3://$S3_BUCKET_NAME
+          aws s3 cp --region ap-northeast-2 --acl private ./deploy-$IMAGE_TAG.zip s3://$S3_BUCKET_NAME/$REPO_NAME
       
       # Deploy
       # S3에 업로드 했던 내용을 가지고 와서, code deploy 실행
@@ -74,4 +73,4 @@ jobs:
           --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
           --deployment-config-name CodeDeployDefault.AllAtOnce \
           --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
-          --s3-location bucket=$S3_BUCKET_NAME,key=deploy-$IMAGE_TAG.zip,bundleType=zip
+          --s3-location bucket=$S3_BUCKET_NAME,key=$REPO_NAME/deploy-$IMAGE_TAG.zip,bundleType=zip
