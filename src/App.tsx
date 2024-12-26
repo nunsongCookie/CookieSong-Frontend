@@ -6,11 +6,13 @@ import SolveQuizMain from "./pages/SolveQuizMain";
 import SolveQuiz from "./pages/SolveQuiz";
 import SolveQuizResult from "./pages/SolveQuizResult";
 import SolveQuizRank from "./pages/SolveQuizRank";
+import HealthCheck from "./pages/HealthCheck";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<MakeQuizMain />} />
+      <Route path="/health" element={<HealthCheck />} />
       <Route path="/make-quiz-main" element={<MakeQuizMain />} />
       <Route path="/make-quiz" element={<MakeQuiz />} />
       <Route path="/make-quiz-share" element={<MakeQuizShare />} />
