@@ -56,7 +56,7 @@ const Frame: FunctionComponent = () => {
           cols={9}
           value={userName} // 상태와 연결
           onChange={handleUserNameChange} // 상태 업데이트
-          placeholder="유저 이름을 입력하세요"
+          placeholder="이름"
         />
         <div className={styles.titleContainer}>
           <h1 className={styles.h1}>영역</h1>

@@ -5,6 +5,7 @@ import MakeQuizShare from "./pages/MakeQuizShare";
 import SolveQuizMain from "./pages/SolveQuizMain";
 import SolveQuiz from "./pages/SolveQuiz";
 import SolveQuizResult from "./pages/SolveQuizResult";
+import SolveQuizRank from "./pages/SolveQuizRank";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Route path="/solve-quiz-main" element={<SolveQuizMain />} />
       <Route path="/solve-quiz" element={<SolveQuiz />} />
       <Route path="/solve-quiz-result" element={<SolveQuizResult />} />
+      <Route path="/solve-quiz-rank" element={<SolveQuizRank />} />
     </Routes>
   );
 }
