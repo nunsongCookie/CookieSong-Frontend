@@ -1,5 +1,5 @@
 import { FunctionComponent, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import QuizButton from "../components/QuizButton";
 import styles from "./MakeQuiz.module.css";
@@ -12,44 +12,62 @@ interface Question {
 const MakeQuiz: FunctionComponent = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const {quizId} = useParams<{quizId: string}>();
   const navigate = useNavigate();
 
   /* 더미 데이터로 테스트 */
-  useEffect(() => {
-    const dummyQuestions: Question[] = [
-      { questionId: 1, questionText: "올해 내가 구매한 가장 비쌌던 물건은?" },
-      { questionId: 2, questionText: "올해 내가 제일 열광했던 영화나 드라마 속 캐릭터는?" },
-      { questionId: 3, questionText: "올해 가장 재밌게 본 영화나 드라마는?" },
-      { questionId: 4, questionText: "올해 내가 겪은 가장 큰 행운은?" },
-      { questionId: 5, questionText: "올해 가장 자주 들은 노래는?" },
-      { questionId: 6, questionText: "올해 선정한 나만 알고 싶은 소울 맛집?" },
-      { questionId: 7, questionText: "올해 내가 가장 민망했던 순간은?" },
-      { questionId: 8, questionText: "올해 구매한 물건 중 가장 후회되는 것은?" },
-      { questionId: 9, questionText: "올해 가장 자주 사용한 앱은?" },
-      { questionId: 10, questionText: "올해 내가 가장 자주 시킨 배달 음식 종류는?" },
-    ];
-    setQuestions(dummyQuestions);
-  }, []);
+  // useEffect(() => {
+  //   const dummyQuestions: Question[] = [
+  //     { questionId: 1, questionText: "올해 내가 구매한 가장 비쌌던 물건은?" },
+  //     { questionId: 2, questionText: "올해 내가 제일 열광했던 영화나 드라마 속 캐릭터는?" },
+  //     { questionId: 3, questionText: "올해 가장 재밌게 본 영화나 드라마는?" },
+  //     { questionId: 4, questionText: "올해 내가 겪은 가장 큰 행운은?" },
+  //     { questionId: 5, questionText: "올해 가장 자주 들은 노래는?" },
+  //     { questionId: 6, questionText: "올해 선정한 나만 알고 싶은 소울 맛집?" },
+  //     { questionId: 7, questionText: "올해 내가 가장 민망했던 순간은?" },
+  //     { questionId: 8, questionText: "올해 구매한 물건 중 가장 후회되는 것은?" },
+  //     { questionId: 9, questionText: "올해 가장 자주 사용한 앱은?" },
+  //     { questionId: 10, questionText: "올해 내가 가장 자주 시킨 배달 음식 종류는?" },
+  //   ];
+  //   setQuestions(dummyQuestions);
+  // }, []);
 
-  /* 데이터 가져오기, 백엔드 연결하면 이걸로로
-  useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        const response = await fetch("/api/questions");
-        const data: Question[] = await response.json();
+  // 데이터 가져오기, 백엔드 연결하면 이걸로로
+  // useEffect(() => {
+  //   const fetchQuestions = async () => {
+  //     try {
+  //       const response = await fetch("http://localhost:8080/api/quizzes/${quizId}");
+  //       const data: Question[] = await response.json();
+  //       setQuestions(data);
+  //     } catch (error) {
+  //       console.error("Failed to fetch questions:", error);
+  //     }
+  //   };
+
+  //   fetchQuestions();
+  // }, []);
+  useEffect(()=> {
+    const fetchQuizData = async() => {
+      try{
+        const response = await fetch(`http://localhost:8080/api/questions`);
+        if(!response.ok){
+          throw new Error("질문 데이터를 불러오는 데 실패했습니다.");
+        }
+
+        const data : Question[] = await response.json();
         setQuestions(data);
-      } catch (error) {
-        console.error("Failed to fetch questions:", error);
+      } catch(error){
+        console.error("질문 데이터를 불러오는 데 실패했습니다!", error);
       }
     };
 
-    fetchQuestions();
+    fetchQuizData();
   }, []);
-  */
+  
+  const currentQuestion = questions[currentQuestionIndex]; // 현재 질문
+  const totalQuestions = questions.length; // 총 질문수 계산 
 
-  const currentQuestion = questions[currentQuestionIndex];
-  const totalQuestions = questions.length;
-
+  // 이전 
   const handlePrevious = () => {
     if (currentQuestionIndex === 0) {
       navigate("/make-quiz-main");
@@ -58,6 +76,7 @@ const MakeQuiz: FunctionComponent = () => {
     }
   };
 
+  // 다음 
   const handleNext = () => {
     if (currentQuestionIndex === totalQuestions - 1) {
       navigate("/make-quiz-share");
@@ -66,7 +85,8 @@ const MakeQuiz: FunctionComponent = () => {
     }
   };
 
-  const progressPercentage = (currentQuestionIndex + 1) / totalQuestions * 100;
+  //const progressPercentage = (currentQuestionIndex + 1) / totalQuestions * 100;
+  const progressPercentage = totalQuestions >0? ((currentQuestionIndex+1)/totalQuestions)*100:0;
 
   return (
     <div className={styles.div}>
