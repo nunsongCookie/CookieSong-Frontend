@@ -1,5 +1,5 @@
 import { FunctionComponent, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header";
 import QuizButton from "../components/QuizButton";
 import OptionComponent from "../components/OptionComponent";
@@ -10,51 +10,102 @@ interface Question {
   questionText: string;
 }
 
+interface Choice {
+  id: number;
+  answer: string;
+  correct: boolean;
+}
+
+interface QuestionChoices {
+  questionId: number;
+  choiceDtos: Choice[];
+}
+
 const SolveQuiz: FunctionComponent = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
+  const [choices, setChoices] = useState<QuestionChoices[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [currentChoices, setCurrentChoices] = useState<Choice[]>([]);
+  const { quizId } = useParams<{ quizId: string }>();
   const navigate = useNavigate();
 
-  /* 더미 데이터로 테스트 */
-    useEffect(() => {
-      const dummyQuestions: Question[] = [
-        { questionId: 1, questionText: "올해 내가 구매한 가장 비쌌던 물건은?" },
-        { questionId: 2, questionText: "올해 내가 제일 열광했던 영화나 드라마 속 캐릭터는?" },
-        { questionId: 3, questionText: "올해 가장 재밌게 본 영화나 드라마는?" },
-        { questionId: 4, questionText: "올해 내가 겪은 가장 큰 행운은?" },
-        { questionId: 5, questionText: "올해 가장 자주 들은 노래는?" },
-        { questionId: 6, questionText: "올해 선정한 나만 알고 싶은 소울 맛집?" },
-        { questionId: 7, questionText: "올해 내가 가장 민망했던 순간은?" },
-        { questionId: 8, questionText: "올해 구매한 물건 중 가장 후회되는 것은?" },
-        { questionId: 9, questionText: "올해 가장 자주 사용한 앱은?" },
-        { questionId: 10, questionText: "올해 내가 가장 자주 시킨 배달 음식 종류는?" },
-      ];
-      setQuestions(dummyQuestions);
-    }, []);
-  
-    /* 데이터 가져오기, 백엔드 연결하면 이걸로로
-    useEffect(() => {
-      const fetchQuestions = async () => {
-        try {
-          const response = await fetch("/api/questions");
-          const data: Question[] = await response.json();
-          setQuestions(data);
-        } catch (error) {
-          console.error("Failed to fetch questions:", error);
+  // 문제를 가져오기
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      if (!quizId) {
+        console.error("Quiz ID is null");
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:8080/api/questions`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch questions");
         }
-      };
-  
-      fetchQuestions();
-    }, []);
-    */
+
+        const data: Question[] = await response.json();
+        setQuestions(data);
+      } catch (error) {
+        console.error("Error fetching questions:", error);
+      }
+    };
+
+    fetchQuestions();
+  }, [quizId]);
+
+  // 선택지 가져오기
+  useEffect(() => {
+    const fetchChoices = async () => {
+      if (!quizId) {
+        console.error("Quiz ID is null");
+        return;
+      }
+
+      try {
+        const response = await fetch(`http://localhost:8080/api/choices/${quizId}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch choices");
+        }
+
+        const data: QuestionChoices[] = await response.json();
+        setChoices(data);
+      } catch (error) {
+        console.error("Error fetching choices:", error);
+      }
+    };
+
+    fetchChoices();
+  }, [quizId]);
+
+  // 현재 질문에 해당하는 선택지 필터링 및 랜덤화
+  useEffect(() => {
+    if (questions.length === 0 || choices.length === 0) return;
+
+    const currentQuestion = questions[currentQuestionIndex];
+    const currentQuestionChoices = choices.find(
+      (choiceSet) => choiceSet.questionId === currentQuestion.questionId
+    );
+
+    if (currentQuestionChoices) {
+      setCurrentChoices(shuffleArray(currentQuestionChoices.choiceDtos));
+    }
+  }, [currentQuestionIndex, questions, choices]);
+
+  // 랜덤하게 섞는 함수
+  const shuffleArray = (array: Choice[]) => {
+    return array
+      .map((value) => ({ value, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ value }) => value);
+  };
 
   const currentQuestion = questions[currentQuestionIndex];
   const totalQuestions = questions.length;
 
   const handlePrevious = () => {
     if (currentQuestionIndex === 0) {
-      navigate("/solve-quiz-main");
+      navigate(`/quiz/${quizId}`);
     } else {
       setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
       setSelectedOption(null);
@@ -63,7 +114,7 @@ const SolveQuiz: FunctionComponent = () => {
 
   const handleNext = () => {
     if (currentQuestionIndex === totalQuestions - 1) {
-      navigate("/solve-quiz-result");
+      navigate(`/solve-quiz-result/${quizId}`);
     } else {
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
       setSelectedOption(null);
@@ -80,6 +131,7 @@ const SolveQuiz: FunctionComponent = () => {
     <div className={styles.div}>
       <Header />
 
+      {/* Progress Bar */}
       <div className={styles.progressBar}>
         <div
           className={styles.progress}
@@ -87,36 +139,29 @@ const SolveQuiz: FunctionComponent = () => {
         />
       </div>
 
+      {/* Question Section */}
       {currentQuestion ? (
         <div className={styles.questionContainer}>
-          <h3 className={styles.questionNumber}>
-            Q{currentQuestion.questionId}.
-          </h3>
+          <h3 className={styles.questionNumber}>Q{currentQuestion.questionId}.</h3>
           <h3 className={styles.questionText}>{currentQuestion.questionText}</h3>
         </div>
       ) : (
         <p>Loading questions...</p>
       )}
 
-      {/* 옵션 선택 영역 */}
+      {/* Option Selection Section */}
       <section className={styles.optionSection}>
-        <OptionComponent
-          optionText="옵션 1"
-          isSelected={selectedOption === "옵션 1"}
-          onSelect={() => handleOptionSelect("옵션 1")}
-        />
-        <OptionComponent
-          optionText="옵션 2"
-          isSelected={selectedOption === "옵션 2"}
-          onSelect={() => handleOptionSelect("옵션 2")}
-        />
-        <OptionComponent
-          optionText="옵션 3"
-          isSelected={selectedOption === "옵션 3"}
-          onSelect={() => handleOptionSelect("옵션 3")}
-        />
+        {currentChoices.map((choice) => (
+          <OptionComponent
+            key={choice.id}
+            optionText={choice.answer}
+            isSelected={selectedOption === choice.answer}
+            onSelect={() => handleOptionSelect(choice.answer)}
+          />
+        ))}
       </section>
 
+      {/* Navigation Buttons */}
       <div className={styles.buttonWrapper}>
         <QuizButton
           onPrevious={handlePrevious}
