@@ -41,6 +41,11 @@ const Frame: FunctionComponent = () => {
 
   // 유저 생성
   const handleStartQuiz = async () => {
+    if (!userName.trim()) {
+      alert("이름을 입력해주세요.");
+      return;
+    }
+    
     try{
       const userResponse = await fetch("http://localhost:8080/api/responses", {
         method : "POST",
