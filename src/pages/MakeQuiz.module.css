@@ -3,14 +3,14 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  width: 100%; /* 부모 영향을 받지 않도록 고정 */
-  max-width: 400px; /* 최대 너비 고정 */
-  margin: 0 auto; /* 중앙 정렬 */
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
   height: 100vh;
   background-color: #f3f3f3;
-  padding: 16px; /* 상단/하단 간격 설정 */
+  padding: 16px;
   box-sizing: border-box;
-  position: relative; /* 다른 요소에 영향받지 않도록 설정 */
+  position: relative;
 }
 
 .questionContainer {
@@ -18,8 +18,8 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  width: 90%; /* 고정된 너비 */
-  max-width: 400px; /* 부모와 동일한 최대 너비 */
+  width: 90%;
+  max-width: 400px;
   margin-top: 24px;
   margin-bottom: 40px;
 }
@@ -29,7 +29,7 @@
   font-weight: bold;
   color: #333;
   margin-bottom: 12px;
-  text-align: left; /* 텍스트 정렬 명시 */
+  text-align: left;
 }
 
 .questionText {
@@ -50,12 +50,12 @@
   width: 90%; /* 부모와 동일한 너비 */
   max-width: 400px; /* 고정된 최대 너비 */
   margin-bottom: 24px;
-  gap: 8px; /* 간격 조정 */
+  gap: 16px; /* 간격 조정 */
 }
 
 .correctAnswerInput,
 .input {
-  width: 100%; /* 입력 필드의 너비를 부모에 맞춤 */
+  width: 100%;
   height: 40px;
   padding: 8px;
   font-size: 1rem;
@@ -90,13 +90,20 @@
 }
 
 .buttonWrapper {
-  position: absolute;
-  bottom: 36px;
-  left: 0;
-  width: 100%;
-  max-width: 400px; /* 버튼 영역 고정 */
   display: flex;
   justify-content: center;
-  padding: 0 16px;
-  box-sizing: border-box;
+  align-items: center;
+  width: 100%;
+  margin: 24px 0;
+}
+
+.inputGroup {
+  width: 100%;
+  max-width: 400px;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.inputGroup .input {
+  margin-bottom: 12px; /* 각 input 사이의 간격 */
 }

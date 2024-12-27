@@ -18,7 +18,7 @@ interface Choice {
 const MakeQuiz: FunctionComponent = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [choices, setChoices] = useState<Choice[]>([]); // 보기 저장
+  const [choices, setChoices] = useState<Choice[]>([]);
   const [correctAnswer, setCorrectAnswer] = useState("");
   const [wrongAnswers, setWrongAnswers] = useState<string[]>(["", ""]);
   const { quizId } = useParams<{ quizId: string }>();
@@ -42,7 +42,6 @@ const MakeQuiz: FunctionComponent = () => {
     fetchQuestions();
   }, []);
 
-  // 선택지 저장
   const saveChoice = () => {
     const currentQuestionId = questions[currentQuestionIndex]?.questionId;
     if (!currentQuestionId) return;
@@ -55,14 +54,6 @@ const MakeQuiz: FunctionComponent = () => {
     setChoices(updatedChoices);
   };
 
-  // 상태 업데이트 후 선택지 제출
-  useEffect(() => {
-    if (choices.length > 0) {
-      console.log("Updated Choices:", choices);
-    }
-  }, [choices]); // choices 상태가 변경될 때마다 로그를 찍어봄
-
-  // 상태 업데이트 후 선택지 제출
   useEffect(() => {
     if (choices.length === questions.length) {
       submitChoices();
@@ -79,7 +70,7 @@ const MakeQuiz: FunctionComponent = () => {
 
     if (currentQuestionIndex === questions.length - 1) {
       setTimeout(() => {
-        navigate("/make-quiz-share");
+        navigate("/make-quiz-share/:quizId");
       }, 0);
       return;
     }
@@ -89,14 +80,13 @@ const MakeQuiz: FunctionComponent = () => {
     setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
   };
 
-  // 선택지 제출
   const submitChoices = async () => {
     if (!quizId) {
       console.error("Quiz Id is null");
       alert("퀴즈 ID가 없습니다.");
       return;
     }
-    console.log("Submitting choices:", choices); // 실제로 제출되는 데이터 확인
+    console.log("Submitting choices:", choices);
 
     try {
       const response = await fetch("http://localhost:8080/api/choices", {
@@ -118,7 +108,7 @@ const MakeQuiz: FunctionComponent = () => {
     }
   };
 
-  const currentQuestion = questions[currentQuestionIndex]; // 현재 질문
+  const currentQuestion = questions[currentQuestionIndex];
 
   return (
     <div className={styles.div}>
@@ -133,6 +123,7 @@ const MakeQuiz: FunctionComponent = () => {
         />
       </div>
 
+      {/* Question Section */}
       {currentQuestion ? (
         <div className={styles.questionContainer}>
           <h3 className={styles.questionNumber}>Q{currentQuestion.questionId}.</h3>
@@ -142,6 +133,7 @@ const MakeQuiz: FunctionComponent = () => {
         <p>Loading questions...</p>
       )}
 
+      {/* Correct Answer Section */}
       <section className={styles.correctAnswerSection}>
         <h3 className={styles.correctAnswerTitle}>정답 보기를 입력해주세요</h3>
         <input
@@ -153,6 +145,7 @@ const MakeQuiz: FunctionComponent = () => {
         />
       </section>
 
+      {/* Wrong Answers Section */}
       <section className={styles.answerSection}>
         <h3 className={styles.answerTitle}>오답 보기를 입력해주세요</h3>
         <div className={styles.inputGroup}>
@@ -181,6 +174,7 @@ const MakeQuiz: FunctionComponent = () => {
         </div>
       </section>
 
+      {/* Navigation Buttons */}
       <div className={styles.buttonWrapper}>
         <QuizButton
           onPrevious={() => {
