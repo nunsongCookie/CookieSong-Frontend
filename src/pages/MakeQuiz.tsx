@@ -70,7 +70,7 @@ const MakeQuiz: FunctionComponent = () => {
 
     if (currentQuestionIndex === questions.length - 1) {
       setTimeout(() => {
-        navigate("/make-quiz-share/:quizId");
+        navigate(`/make-quiz-share/${quizId}`);
       }, 0);
       return;
     }

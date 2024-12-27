@@ -15,7 +15,7 @@ function App() {
       <Route path="/health" element={<HealthCheck />} />
       <Route path="/make-quiz-main" element={<MakeQuizMain />} />
       <Route path="/make-quiz/:quizId" element={<MakeQuiz />} />
-      <Route path="/make-quiz-share" element={<MakeQuizShare />} />
+      <Route path="/make-quiz-share/:quizId" element={<MakeQuizShare />} />
       <Route path="/solve-quiz-main" element={<SolveQuizMain />} />
       <Route path="/solve-quiz" element={<SolveQuiz />} />
       <Route path="/solve-quiz-result" element={<SolveQuizResult />} />
