@@ -18,8 +18,8 @@ function App() {
       <Route path="/make-quiz-share/:quizId" element={<MakeQuizShare />} />
       <Route path="/quiz/:quizId" element={<SolveQuizMain />} />
       <Route path="/solve-quiz/:quizId" element={<SolveQuiz />} />
-      <Route path="/solve-quiz-result/:quizId" element={<SolveQuizResult />} />
-      <Route path="/solve-quiz-rank/:quizId" element={<SolveQuizRank />} />
+      <Route path="/solve-quiz-result/:responseId" element={<SolveQuizResult />} />
+      <Route path="/solve-quiz-rank/:responseId" element={<SolveQuizRank />} />
     </Routes>
   );
 }

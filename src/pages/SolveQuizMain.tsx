@@ -61,9 +61,12 @@ const Frame: FunctionComponent = () => {
 
       const userData = await userResponse.json();
       console.log("User created:", userData);
+      console.log(userData.id)
 
       // 퀴즈 페이지 이동 
-      navigate(`/solve-quiz/${quizId}`);
+      navigate(`/solve-quiz/${quizId}`, {
+        state: { userId: userData.id },
+      });
     }
     catch(error){
       console.error("Error: ", error);

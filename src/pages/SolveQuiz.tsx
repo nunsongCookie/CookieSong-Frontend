@@ -1,5 +1,5 @@
 import { FunctionComponent, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import Header from "../components/Header";
 import QuizButton from "../components/QuizButton";
 import OptionComponent from "../components/OptionComponent";
@@ -21,14 +21,32 @@ interface QuestionChoices {
   choiceDtos: Choice[];
 }
 
+interface Answer {
+  questionId: number;
+  selectedChoiceId: number;
+}
+
 const SolveQuiz: FunctionComponent = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [choices, setChoices] = useState<QuestionChoices[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [selectedOption, setSelectedOption] = useState<number | null>(null); // 선택된 선택지 ID
   const [currentChoices, setCurrentChoices] = useState<Choice[]>([]);
+  const [answers, setAnswers] = useState<
+    { questionId: number; selectedChoiceId: number }[]
+  >([]);
   const { quizId } = useParams<{ quizId: string }>();
+  const { state } = useLocation();
   const navigate = useNavigate();
+
+  const responseId = state?.userId;
+
+  useEffect(() => {
+    if (!responseId) {
+      console.error("responseId가 전달되지 않았습니다.");
+      navigate(`/quiz/${quizId}`);
+    }
+  }, [responseId, navigate, quizId]);
 
   // 문제를 가져오기
   useEffect(() => {
@@ -78,7 +96,7 @@ const SolveQuiz: FunctionComponent = () => {
     fetchChoices();
   }, [quizId]);
 
-  // 현재 질문에 해당하는 선택지 필터링 및 랜덤화
+  // 현재 질문에 해당하는 선택지 필터링
   useEffect(() => {
     if (questions.length === 0 || choices.length === 0) return;
 
@@ -88,17 +106,9 @@ const SolveQuiz: FunctionComponent = () => {
     );
 
     if (currentQuestionChoices) {
-      setCurrentChoices(shuffleArray(currentQuestionChoices.choiceDtos));
+      setCurrentChoices(currentQuestionChoices.choiceDtos);
     }
   }, [currentQuestionIndex, questions, choices]);
-
-  // 랜덤하게 섞는 함수
-  const shuffleArray = (array: Choice[]) => {
-    return array
-      .map((value) => ({ value, sort: Math.random() }))
-      .sort((a, b) => a.sort - b.sort)
-      .map(({ value }) => value);
-  };
 
   const currentQuestion = questions[currentQuestionIndex];
   const totalQuestions = questions.length;
@@ -112,9 +122,50 @@ const SolveQuiz: FunctionComponent = () => {
     }
   };
 
-  const handleNext = () => {
-    if (currentQuestionIndex === totalQuestions - 1) {
-      navigate(`/solve-quiz-result/${quizId}`);
+  const handleNext = async () => {
+    if (selectedOption === null) {
+      alert("옵션을 선택해주세요.");
+      return;
+    }
+  
+    setAnswers((prevAnswers) => [
+      ...prevAnswers,
+      { questionId: questions[currentQuestionIndex].questionId, selectedChoiceId: selectedOption },
+    ]);
+  
+    if (currentQuestionIndex === questions.length - 1) {
+      try {
+        const submissionData = {
+          responseId,
+          quizId: Number(quizId),
+          answers: [
+            ...answers,
+            { questionId: questions[currentQuestionIndex].questionId, selectedChoiceId: selectedOption },
+          ],
+        };
+        console.log("Submission Data:", submissionData);
+  
+        const response = await fetch("http://localhost:8080/api/answers", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(submissionData),
+        });
+  
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error("Server Response:", errorText);
+          throw new Error("응답 제출에 실패했습니다.");
+        }
+  
+        console.log("Answers submitted successfully");
+        alert("퀴즈가 완료되었습니다!");
+        navigate(`/solve-quiz-result/${responseId}`);
+      } catch (error) {
+        console.error("Error submitting answers:", error);
+        alert("응답 제출 중 문제가 발생했습니다.");
+      }
     } else {
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
       setSelectedOption(null);
@@ -123,8 +174,8 @@ const SolveQuiz: FunctionComponent = () => {
 
   const progressPercentage = ((currentQuestionIndex + 1) / totalQuestions) * 100;
 
-  const handleOptionSelect = (option: string) => {
-    setSelectedOption(option);
+  const handleOptionSelect = (optionId: number) => {
+    setSelectedOption(optionId);
   };
 
   return (
@@ -155,8 +206,8 @@ const SolveQuiz: FunctionComponent = () => {
           <OptionComponent
             key={choice.id}
             optionText={choice.answer}
-            isSelected={selectedOption === choice.answer}
-            onSelect={() => handleOptionSelect(choice.answer)}
+            isSelected={selectedOption === choice.id}
+            onSelect={() => handleOptionSelect(choice.id)}
           />
         ))}
       </section>
