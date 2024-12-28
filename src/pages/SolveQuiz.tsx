@@ -161,7 +161,9 @@ const SolveQuiz: FunctionComponent = () => {
   
         console.log("Answers submitted successfully");
         alert("퀴즈가 완료되었습니다!");
-        navigate(`/solve-quiz-result/${responseId}`);
+        navigate(`/solve-quiz-result/${responseId}`, {
+          state: { responseId: responseId, quizId: quizId },
+        });
       } catch (error) {
         console.error("Error submitting answers:", error);
         alert("응답 제출 중 문제가 발생했습니다.");
