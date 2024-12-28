@@ -6,6 +6,7 @@ import SolveQuizMain from "./pages/SolveQuizMain";
 import SolveQuiz from "./pages/SolveQuiz";
 import SolveQuizResult from "./pages/SolveQuizResult";
 import SolveQuizRank from "./pages/SolveQuizRank";
+import SolveQuizWrong from "./pages/SolveQuizWrong";
 import HealthCheck from "./pages/HealthCheck";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
       <Route path="/solve-quiz/:quizId" element={<SolveQuiz />} />
       <Route path="/solve-quiz-result/:responseId" element={<SolveQuizResult />} />
       <Route path="/solve-quiz-rank/:quizId" element={<SolveQuizRank />} />
+      <Route path="/solve-quiz-wrong/:responseId" element={<SolveQuizWrong />} />
     </Routes>
   );
 }

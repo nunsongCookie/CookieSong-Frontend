@@ -1,0 +1,43 @@
+.optionContainer {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border: 2px solid #ccc;
+    border-radius: 12px;
+    cursor: pointer;
+    width: 100%; /* 가로 길이를 화면 너비에 맞게 설정 */
+    max-width: 600px; /* 최대 너비 제한 */
+    margin-bottom: 18px;
+  }
+
+  .selectedBorder {
+    border: 2px solid red;
+  }
+
+  .correctBorder {
+    border: 2px solid green;
+  }
+
+  .circle {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    transition: background-color 0.15s ease, border-color 0.15s ease; /* 애니메이션 속도 조정 */
+  }
+  
+  .selectedCircle {
+    border-color: red;
+  }
+  
+  .optionText {
+    font-size: 1rem;
+    color: #333;
+    font-family: "Pretendard", sans-serif;
+    width: calc(100% - 40px); /* 버튼의 남은 가로 공간을 텍스트 영역에 할당 */
+    white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 설정 */
+    overflow: hidden; /* 넘치는 텍스트를 숨김 */
+    text-overflow: ellipsis; /* 말줄임 표시 */
+  }
+  

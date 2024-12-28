@@ -1,0 +1,81 @@
+.div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 400px;
+  margin: 0 auto;
+  height: 100vh;
+  background-color: #f3f3f3;
+  padding: 16px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.questionContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 85%;
+  max-width: 400px;
+  margin-top: 24px;
+  margin-bottom: 40px;
+}
+  
+.questionNumber {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 12px;
+  text-align: left;
+}
+  
+.questionText {
+  font-size: 1.3rem;
+  font-weight: normal;
+  color: #555;
+  word-break: break-word; /* 텍스트 줄바꿈 강제 */
+  white-space: normal; /* 텍스트가 부모를 초과하지 않도록 설정 */
+  overflow-wrap: break-word; /* 줄바꿈 처리 */
+}
+  
+.buttonWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 85%;
+  margin: 24px 0;
+}
+  
+.progressBar {
+  width: 85%; /* 부모 컨테이너와 동일한 너비 */
+  max-width: 400px; /* 고정된 최대 너비 */
+  height: 8px;
+  background-color: #d8e3f0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 16px auto;
+}
+  
+.progress {
+  width: 8.5%; /* 기본 진행 바 크기 */
+  height: 100%;
+  background-color: #0a70d9;
+  border-radius: 4px;
+  transition: width 0.3s ease; /* 부드러운 애니메이션 */
+}
+   
+.optionSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 85%; /* 부모와 동일한 너비 */
+  max-width: 400px; /* 고정된 최대 너비 */
+  margin-bottom: 24px;
+}
+
+.correct {
+  border: 2px solid green;
+}

@@ -116,6 +116,12 @@ const SolveQuizResult = () => {
     });
   };
 
+  const handleViewWrong = () => {
+    navigate(`/solve-quiz-wrong/${responseId}`, {
+      state: { responseId: responseId, quizId: quizId, userId: userId},
+    });
+  };
+
   if (isLoading) {
     return (
       <div className={styles.container}>
@@ -228,7 +234,7 @@ const SolveQuizResult = () => {
       {/* Button */}
       <section className={styles.buttonWrapper}>
         <Button text="등수 확인" onClick={handleViewRank} />
-        <Button text="오답 노트" onClick={handleViewRank} />
+        <Button text="오답 노트" onClick={handleViewWrong} />
       </section>
     </div>
   );
