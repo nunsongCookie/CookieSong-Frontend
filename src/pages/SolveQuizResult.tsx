@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
-import Header from "../components/Header";
 import Button from "../components/Button";
 import styles from "./SolveQuizResult.module.css";
 
@@ -9,6 +8,13 @@ interface Result {
   selectedChoiceId: number;
   correctAnswer: number;
   correct: boolean;
+}
+
+interface Report {
+  userName: string;
+  score: number;
+  examNumber: string;
+  grade: string;
 }
 
 const SolveQuizResult = () => {
@@ -20,6 +26,7 @@ const SolveQuizResult = () => {
   const [results, setResults] = useState<Result[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [creatorName, setCreatorName] = useState<string>("");
+  const [report, setReport] = useState<Report | null>(null);
 
   // API 호출로 결과 가져오기
   useEffect(() => {
@@ -48,6 +55,33 @@ const SolveQuizResult = () => {
     };
 
     fetchResults();
+  }, [responseId]);
+
+  // API 호출로 성적 통지표 가져오기
+  useEffect(() => {
+    const fetchReport = async () => {
+      if (!responseId) {
+        console.error("responseId가 없습니다.");
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `http://localhost:8080/api/responses/${responseId}/submit`
+        );
+
+        if (!response.ok) {
+          throw new Error("성적 통지표를 가져오는 데 실패했습니다.");
+        }
+
+        const data: Report = await response.json();
+        setReport(data);
+      } catch (error) {
+        console.error("Error fetching report:", error);
+      }
+    };
+
+    fetchReport();
   }, [responseId]);
 
   const fetchCreatorName = async () => {
@@ -84,7 +118,6 @@ const SolveQuizResult = () => {
   if (isLoading) {
     return (
       <div className={styles.container}>
-        <Header />
         <p>결과를 불러오는 중입니다...</p>
       </div>
     );
@@ -96,9 +129,6 @@ const SolveQuizResult = () => {
 
   return (
     <div className={styles.container}>
-      {/* Header */}
-      <Header />
-
       {/* Section Title */}
       <div className={styles.sectionTitle}>1교시 {creatorName} 영역</div>
 
@@ -185,15 +215,10 @@ const SolveQuizResult = () => {
           </thead>
           <tbody>
             <tr>
-              <td>02071345</td>
-              <td>최은소</td>
-              <td>{results.filter((r) => r.correct).length * 10}</td>
-              <td>
-                {Math.ceil(
-                  (results.filter((r) => r.correct).length / results.length) *
-                    5
-                )}
-              </td>
+              <td>{report?.examNumber || "N/A"}</td>
+              <td>{report?.userName || "N/A"}</td>
+              <td>{report?.score || "N/A"}</td>
+              <td>{report?.grade || "N/A"}</td>
             </tr>
           </tbody>
         </table>
