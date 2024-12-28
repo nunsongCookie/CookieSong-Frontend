@@ -22,6 +22,7 @@ const SolveQuizResult = () => {
   const { state } = useLocation();
   const responseId = state?.responseId;
   const quizId = state?.quizId;
+  const userId = state?.userId;
 
   const [results, setResults] = useState<Result[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -111,7 +112,7 @@ const SolveQuizResult = () => {
 
   const handleViewRank = () => {
     navigate(`/solve-quiz-rank/${quizId}`, {
-      state: { responseId: responseId, quizId: quizId },
+      state: { responseId: responseId, quizId: quizId, userId: userId},
     });
   };
 
@@ -217,7 +218,7 @@ const SolveQuizResult = () => {
             <tr>
               <td>{report?.examNumber || "N/A"}</td>
               <td>{report?.userName || "N/A"}</td>
-              <td>{report?.score || "N/A"}</td>
+              <td>{report?.score || "0"}</td>
               <td>{report?.grade || "N/A"}</td>
             </tr>
           </tbody>

@@ -39,7 +39,8 @@ const SolveQuiz: FunctionComponent = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
 
-  const responseId = state?.userId;
+  const responseId = state?.responseId;
+  const userId = state?.userId;
 
   useEffect(() => {
     if (!responseId) {
@@ -160,8 +161,9 @@ const SolveQuiz: FunctionComponent = () => {
         }
   
         console.log("Answers submitted successfully");
+        console.log(userId);
         navigate(`/solve-quiz-result/${responseId}`, {
-          state: { responseId: responseId, quizId: quizId },
+          state: { responseId: responseId, quizId: quizId, userId: userId },
         });
       } catch (error) {
         console.error("Error submitting answers:", error);
