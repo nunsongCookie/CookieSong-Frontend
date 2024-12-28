@@ -1,4 +1,4 @@
-#dockerfile v2
+#Dockerfile v2
 # 1. React 빌드
 FROM node:18 AS builder
 WORKDIR /
