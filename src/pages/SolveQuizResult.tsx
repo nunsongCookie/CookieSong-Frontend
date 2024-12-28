@@ -134,6 +134,11 @@ const SolveQuizResult = () => {
   const firstHalf = results.slice(0, 5);
   const secondHalf = results.slice(5, 10);
 
+  const modThreePlusOne = (value: number) => {
+    const remainder = value % 3;
+    return remainder + 1;
+  };
+
   return (
     <div className={styles.container}>
       {/* Section Title */}
@@ -166,7 +171,7 @@ const SolveQuizResult = () => {
             <tr>
               {firstHalf.map((result, index) => (
                 <td key={`answer1-${index}`}>
-                  {result.selectedChoiceId}
+                  {modThreePlusOne(result.selectedChoiceId)}
                 </td>
               ))}
             </tr>
@@ -195,7 +200,7 @@ const SolveQuizResult = () => {
             <tr>
               {secondHalf.map((result, index) => (
                 <td key={`answer2-${index}`}>
-                  {result.selectedChoiceId}
+                  {modThreePlusOne(result.selectedChoiceId)}
                 </td>
               ))}
             </tr>
