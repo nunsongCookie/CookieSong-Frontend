@@ -47,7 +47,9 @@ const Frame: FunctionComponent = () => {
       console.log("Quiz created:", quizData);
 
       // 퀴즈 페이지 이동 
-      navigate(`/make-quiz/${quizData.quizId}`);
+      navigate(`/make-quiz/${quizData.quizId}`, {
+        state: { createDate: userData.createdAt, creator: userData.name },
+      });
     }
     catch(error){
       console.error("Error: ", error);

@@ -1,5 +1,5 @@
 import { FunctionComponent, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import Header from "../components/Header";
 import QuizButton from "../components/QuizButton";
 import styles from "./MakeQuiz.module.css";
@@ -22,7 +22,11 @@ const MakeQuiz: FunctionComponent = () => {
   const [correctAnswer, setCorrectAnswer] = useState("");
   const [wrongAnswers, setWrongAnswers] = useState<string[]>(["", ""]);
   const { quizId } = useParams<{ quizId: string }>();
+  const { state } = useLocation();
   const navigate = useNavigate();
+
+  const createDate = state?.createDate;
+  const creator = state?.creator;
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -70,7 +74,9 @@ const MakeQuiz: FunctionComponent = () => {
 
     if (currentQuestionIndex === questions.length - 1) {
       setTimeout(() => {
-        navigate(`/make-quiz-share/${quizId}`);
+        navigate(`/make-quiz-share/${quizId}`, {
+          state: { createDate: createDate, creator: creator },
+        });
       }, 0);
       return;
     }
