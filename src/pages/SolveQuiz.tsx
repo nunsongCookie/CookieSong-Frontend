@@ -160,7 +160,6 @@ const SolveQuiz: FunctionComponent = () => {
         }
   
         console.log("Answers submitted successfully");
-        alert("퀴즈가 완료되었습니다!");
         navigate(`/solve-quiz-result/${responseId}`, {
           state: { responseId: responseId, quizId: quizId },
         });
