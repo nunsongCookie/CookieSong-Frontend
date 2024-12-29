@@ -32,10 +32,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 환경 변수 설정
-      - name: Make env.properties
-        run: |
-          echo "${{ secrets.ENV }}" > .env
           
     # AWS credentials
       - name: AWS IAM 사용자 설정
