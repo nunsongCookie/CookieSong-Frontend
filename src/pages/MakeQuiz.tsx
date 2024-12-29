@@ -24,6 +24,7 @@ const MakeQuiz: FunctionComponent = () => {
   const { quizId } = useParams<{ quizId: string }>();
   const { state } = useLocation();
   const navigate = useNavigate();
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
   const createDate = state?.createDate;
   const creator = state?.creator;
@@ -31,7 +32,7 @@ const MakeQuiz: FunctionComponent = () => {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/questions`);
+        const response = await fetch(`${apiUrl}/api/questions`);
         if (!response.ok) {
           throw new Error("질문 데이터를 불러오는 데 실패했습니다.");
         }
@@ -95,7 +96,7 @@ const MakeQuiz: FunctionComponent = () => {
     console.log("Submitting choices:", choices);
 
     try {
-      const response = await fetch("http://localhost:8080/api/choices", {
+      const response = await fetch(`${apiUrl}/api/choices`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

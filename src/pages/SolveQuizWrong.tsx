@@ -36,6 +36,7 @@ const SolveQuizWrong: FunctionComponent = () => {
   const [currentChoices, setCurrentChoices] = useState<Choice[]>([]);
   const { state } = useLocation();
   const navigate = useNavigate();
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
   const quizId = state?.quizId;
   const responseId = state?.responseId;
@@ -56,7 +57,7 @@ const SolveQuizWrong: FunctionComponent = () => {
       }
 
       try {
-        const response = await fetch(`http://localhost:8080/api/questions`);
+        const response = await fetch(`${apiUrl}/api/questions`);
         if (!response.ok) {
           throw new Error("Failed to fetch questions");
         }
@@ -79,7 +80,7 @@ const SolveQuizWrong: FunctionComponent = () => {
       }
 
       try {
-        const response = await fetch(`http://localhost:8080/api/choices/${quizId}`);
+        const response = await fetch(`${apiUrl}/api/choices/${quizId}`);
         if (!response.ok) {
           throw new Error("Failed to fetch choices");
         }
@@ -102,7 +103,7 @@ const SolveQuizWrong: FunctionComponent = () => {
       }
 
       try {
-        const response = await fetch(`http://localhost:8080/api/responses/${responseId}/results`);
+        const response = await fetch(`${apiUrl}/api/responses/${responseId}/results`);
         if (!response.ok) {
           throw new Error("Failed to fetch user responses");
         }

@@ -8,6 +8,7 @@ const Frame: FunctionComponent = () => {
   const [userName, setUserName] = useState("");
   const { quizId } = useParams<{ quizId: string }>();
   const [creatorName, setCreatorName] = useState<string>("");
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
   // 유저 이름 입력
   const handleUserNameChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -21,7 +22,7 @@ const Frame: FunctionComponent = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/api/quizzes/${quizId}/creator`);
+      const response = await fetch(`${apiUrl}/api/quizzes/${quizId}/creator`);
       if (!response.ok) {
         console.log(quizId);
         throw new Error("사용자 이름을 가져오는 데 실패했습니다.");
@@ -47,7 +48,7 @@ const Frame: FunctionComponent = () => {
     }
     
     try{
-      const userResponse = await fetch("http://localhost:8080/api/responses", {
+      const userResponse = await fetch(`${apiUrl}/api/responses`, {
         method : "POST",
         headers: {
           "Content-Type": "application/json",
@@ -108,8 +109,8 @@ const Frame: FunctionComponent = () => {
           className={styles.textboxName}
           rows={3}
           cols={9}
-          value={userName} // 상태와 연결
-          onChange={handleUserNameChange} // 상태 업데이트
+          value={userName}
+          onChange={handleUserNameChange}
         />
       </section>
 

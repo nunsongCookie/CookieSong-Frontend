@@ -5,17 +5,18 @@ import styles from "./SolveQuizRank.module.css";
 
 interface User {
   name: string;
-  score: number | string; // 초기값은 "-"로 설정되므로 string 포함
-  rank?: number; // rank는 others 배열에만 필요
+  score: number | string;
+  rank?: number;
 }
 
 const SolveQuizRank = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
+
   const responseId = state?.responseId;
   const quizId = state?.quizId;
   const userId = state?.userId;
-  console.log(userId);
 
   const [top3, setTop3] = useState<User[]>([
     { name: "참여자 없음", score: "-", rank: 1 },
@@ -34,7 +35,7 @@ const SolveQuizRank = () => {
   useEffect(() => {
     const fetchRankings = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/result/${quizId}`);
+        const response = await fetch(`${apiUrl}/api/result/${quizId}`);
         const data = await response.json();
 
         if (data.rankings && data.rankings.length > 0) {

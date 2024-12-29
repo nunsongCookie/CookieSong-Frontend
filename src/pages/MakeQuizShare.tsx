@@ -8,6 +8,7 @@ const MakeQuizShare: FunctionComponent = () => {
   const navigate = useNavigate();
   const { quizId } = useParams();
   const { state } = useLocation();
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
   const createDate = state?.createDate;
   const creator = state?.creator;
@@ -21,7 +22,7 @@ const MakeQuizShare: FunctionComponent = () => {
       };
 
       // 백엔드로 요청 보내기
-      const response = await fetch("http://localhost:8080/api/quizzes/share", {
+      const response = await fetch(`${apiUrl}/api/quizzes/share`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -38,6 +38,7 @@ const SolveQuiz: FunctionComponent = () => {
   const { quizId } = useParams<{ quizId: string }>();
   const { state } = useLocation();
   const navigate = useNavigate();
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
   const responseId = state?.responseId;
   const userId = state?.userId;
@@ -58,7 +59,7 @@ const SolveQuiz: FunctionComponent = () => {
       }
 
       try {
-        const response = await fetch(`http://localhost:8080/api/questions`);
+        const response = await fetch(`${apiUrl}/api/questions`);
         if (!response.ok) {
           throw new Error("Failed to fetch questions");
         }
@@ -82,7 +83,7 @@ const SolveQuiz: FunctionComponent = () => {
       }
 
       try {
-        const response = await fetch(`http://localhost:8080/api/choices/${quizId}`);
+        const response = await fetch(`${apiUrl}/api/choices/${quizId}`);
         if (!response.ok) {
           throw new Error("Failed to fetch choices");
         }
@@ -146,7 +147,7 @@ const SolveQuiz: FunctionComponent = () => {
         };
         console.log("Submission Data:", submissionData);
   
-        const response = await fetch("http://localhost:8080/api/answers", {
+        const response = await fetch(`${apiUrl}/api/answers`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

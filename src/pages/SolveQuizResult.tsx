@@ -20,6 +20,8 @@ interface Report {
 const SolveQuizResult = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
+
   const responseId = state?.responseId;
   const quizId = state?.quizId;
   const userId = state?.userId;
@@ -39,7 +41,7 @@ const SolveQuizResult = () => {
 
       try {
         const response = await fetch(
-          `http://localhost:8080/api/responses/${responseId}/results`
+          `${apiUrl}/api/responses/${responseId}/results`
         );
 
         if (!response.ok) {
@@ -68,7 +70,7 @@ const SolveQuizResult = () => {
 
       try {
         const response = await fetch(
-          `http://localhost:8080/api/responses/${responseId}/submit`
+          `${apiUrl}/api/responses/${responseId}/submit`
         );
 
         if (!response.ok) {
@@ -92,7 +94,7 @@ const SolveQuizResult = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:8080/api/quizzes/${quizId}/creator`);
+      const response = await fetch(`${apiUrl}/api/quizzes/${quizId}/creator`);
       if (!response.ok) {
         console.log(quizId);
         throw new Error("사용자 이름을 가져오는 데 실패했습니다.");
