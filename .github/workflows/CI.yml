@@ -38,7 +38,7 @@ jobs:
           echo "${{ secrets.ENV }}" > .env
           
       # nginx 설정
-      - name: Make env.properties
+      - name: Make nginx.conf
         run: |
           echo "${{ secrets.NGINX }}" > nginx.conf
           
