@@ -38,7 +38,7 @@ const SolveQuiz: FunctionComponent = () => {
   const { quizId } = useParams<{ quizId: string }>();
   const { state } = useLocation();
   const navigate = useNavigate();
-  const apiUrl = process.env.REACT_APP_API_BASE_URL;
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
   const responseId = state?.responseId;
   const userId = state?.userId;

@@ -12,7 +12,7 @@ interface User {
 const SolveQuizRank = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const apiUrl = process.env.REACT_APP_API_BASE_URL;
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
   const responseId = state?.responseId;
   const quizId = state?.quizId;
