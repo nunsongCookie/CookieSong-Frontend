@@ -37,11 +37,6 @@ jobs:
         run: |
           echo "${{ secrets.ENV }}" > .env
           
-      # nginx 설정
-      - name: Make nginx.conf
-        run: |
-          echo "${{ secrets.NGINX }}" > nginx.conf
-          
     # AWS credentials
       - name: AWS IAM 사용자 설정
         uses: aws-actions/configure-aws-credentials@v4
