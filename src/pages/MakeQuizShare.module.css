@@ -10,8 +10,9 @@
 }
   
 .imageWrapper {
-    display: flex;
-    justify-content: center;
+    position: relative;
+    display: inline-block;
+    text-align: center;
     align-items: center;
     margin: 32px 0;
     width: 100%;
@@ -19,8 +20,8 @@
 }
   
 .envelopeImage {
-    width: 100%;
-    max-width: 400px;
+    width: 330px;
+    display: block;
     height: auto;
 }
 
@@ -30,4 +31,28 @@
     display: flex;
     justify-content: center;
     padding-bottom: 24px;
+}
+
+.textOverlay1 {
+    position: absolute;
+    top: 165px;
+    left: 133px;
+    width: 124px; /* 너비 */
+    height: 29px; /* 높이 */
+    line-height: 29px; /* 세로 중앙 정렬 */
+    font-size: 13px;
+    font-weight: 300;
+    text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+.textOverlay2 {
+    position: absolute;
+    top: 194px;
+    left: 133px;
+    width: 124px; /* 너비 */
+    height: 31px; /* 높이 */
+    line-height: 31px; /* 세로 중앙 정렬 */
+    font-size: 13px;
+    font-weight: 300;
+    text-align: center; /* 텍스트 가운데 정렬 */
 }

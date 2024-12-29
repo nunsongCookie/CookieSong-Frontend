@@ -6,6 +6,7 @@ import SolveQuizMain from "./pages/SolveQuizMain";
 import SolveQuiz from "./pages/SolveQuiz";
 import SolveQuizResult from "./pages/SolveQuizResult";
 import SolveQuizRank from "./pages/SolveQuizRank";
+import SolveQuizWrong from "./pages/SolveQuizWrong";
 import HealthCheck from "./pages/HealthCheck";
 
 function App() {
@@ -15,11 +16,12 @@ function App() {
       <Route path="/health" element={<HealthCheck />} />
       <Route path="/make-quiz-main" element={<MakeQuizMain />} />
       <Route path="/make-quiz/:quizId" element={<MakeQuiz />} />
-      <Route path="/make-quiz-share" element={<MakeQuizShare />} />
-      <Route path="/solve-quiz-main" element={<SolveQuizMain />} />
-      <Route path="/solve-quiz" element={<SolveQuiz />} />
-      <Route path="/solve-quiz-result" element={<SolveQuizResult />} />
-      <Route path="/solve-quiz-rank" element={<SolveQuizRank />} />
+      <Route path="/make-quiz-share/:quizId" element={<MakeQuizShare />} />
+      <Route path="/quiz/:quizId" element={<SolveQuizMain />} />
+      <Route path="/solve-quiz/:quizId" element={<SolveQuiz />} />
+      <Route path="/solve-quiz-result/:responseId" element={<SolveQuizResult />} />
+      <Route path="/solve-quiz-rank/:quizId" element={<SolveQuizRank />} />
+      <Route path="/solve-quiz-wrong/:responseId" element={<SolveQuizWrong />} />
     </Routes>
   );
 }

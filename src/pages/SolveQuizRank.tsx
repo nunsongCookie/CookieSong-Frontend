@@ -1,34 +1,136 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import Header from "../components/Header";
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import Button from "../components/Button";
 import styles from "./SolveQuizRank.module.css";
 
+interface User {
+  name: string;
+  score: number | string;
+  rank?: number;
+}
+
 const SolveQuizRank = () => {
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
+
+  const responseId = state?.responseId;
+  const quizId = state?.quizId;
+  const userId = state?.userId;
+
+  const [top3, setTop3] = useState<User[]>([
+    { name: "참여자 없음", score: "-", rank: 1 },
+    { name: "참여자 없음", score: "-", rank: 2 },
+    { name: "참여자 없음", score: "-", rank: 3 },
+  ]);
+
+  const [others, setOthers] = useState<User[]>([
+    { rank: 4, name: "참여자 없음", score: "-" },
+    { rank: 5, name: "참여자 없음", score: "-" },
+    { rank: 6, name: "참여자 없음", score: "-" },
+  ]);
+
+  const [myScore, setMyScore] = useState<User>({ rank: undefined, name: "", score: "-" });
+
+  useEffect(() => {
+    const fetchRankings = async () => {
+      try {
+        const response = await fetch(`${apiUrl}/api/result/${quizId}`);
+        const data = await response.json();
+
+        if (data.rankings && data.rankings.length > 0) {
+          const sortedRankings = data.rankings.sort((a: any, b: any) => a.rank - b.rank);
+          const topRankers = Array(3)
+            .fill(null)
+            .map((_, index) =>
+              sortedRankings[index]
+                ? {
+                    name: sortedRankings[index].userName,
+                    score: sortedRankings[index].score,
+                    rank: sortedRankings[index].rank,
+                  }
+                : { name: "참여자 없음", score: "-", rank: index + 1 }
+            );
+
+          const otherRankers = Array(3)
+            .fill(null)
+            .map((_, index) => {
+              const rankingIndex = index + 3;
+              return sortedRankings[rankingIndex]
+                ? {
+                    rank: sortedRankings[rankingIndex].rank,
+                    name: sortedRankings[rankingIndex].userName,
+                    score: sortedRankings[rankingIndex].score,
+                  }
+                : {
+                    rank: rankingIndex + 1,
+                    name: "참여자 없음",
+                    score: "-",
+                  };
+            });
+
+          const myData = sortedRankings.find((user: any) => user.userId === userId) || {
+            rank: "-",
+            name: "참여자 없음",
+            score: "-",
+          };
+
+          setTop3(topRankers);
+          setOthers(otherRankers);
+          setMyScore({
+            rank: myData.rank,
+            name: myData.userName || "참여자 없음",
+            score: myData.score,
+          });
+        } else {
+          // 데이터가 비어 있을 경우 초기 상태 유지
+          setTop3([
+            { name: "참여자 없음", score: "-", rank: 1 },
+            { name: "참여자 없음", score: "-", rank: 2 },
+            { name: "참여자 없음", score: "-", rank: 3 },
+          ]);
+          setOthers([
+            { rank: 4, name: "참여자 없음", score: "-" },
+            { rank: 5, name: "참여자 없음", score: "-" },
+            { rank: 6, name: "참여자 없음", score: "-" },
+          ]);
+          setMyScore({ rank: undefined, name: "참여자 없음", score: "-" });
+        }
+      } catch (error) {
+        console.error("Failed to fetch rankings:", error);
+        // 에러 발생 시 초기 상태 유지
+        setTop3([
+          { name: "참여자 없음", score: "-", rank: 1 },
+          { name: "참여자 없음", score: "-", rank: 2 },
+          { name: "참여자 없음", score: "-", rank: 3 },
+        ]);
+        setOthers([
+          { rank: 4, name: "참여자 없음", score: "-" },
+          { rank: 5, name: "참여자 없음", score: "-" },
+          { rank: 6, name: "참여자 없음", score: "-" },
+        ]);
+        setMyScore({ rank: undefined, name: "참여자 없음", score: "-" });
+      }
+    };
+
+    fetchRankings();
+  }, [quizId, responseId, userId]);
+
+  useEffect(() => {
+    console.log("Top 3:", top3);
+    console.log("Others:", others);
+    console.log("My Score:", myScore);
+  }, [top3, others, myScore]);
 
   const handleBack = () => {
-    navigate("/solve-quiz-result");
+    navigate(`/solve-quiz-result/${responseId}`, {
+      state: { responseId: responseId, quizId: quizId, userId: userId },
+    });
   };
 
   const handleCreateQuiz = () => {
     navigate("/make-quiz-main");
   };
-
-  // 더미 데이터
-  const top3 = [
-    { name: "조의신", score: 90 },
-    { name: "안다인", score: 100 },
-    { name: "김유리", score: 80 },
-  ];
-
-  const others = [
-    { rank: 4, name: "김유리", score: 70 },
-    { rank: 5, name: "최은소", score: 70 },
-    { rank: 6, name: "한이", score: 70 },
-  ];
-
-  const myScore = { rank: 5, name: "최은소", score: 70 };
 
   return (
     <div className={styles.container}>
@@ -42,13 +144,13 @@ const SolveQuizRank = () => {
 
       {/* Podium */}
       <div className={styles.podium}>
-        {top3.map((user, index) => (
+        {top3.map((user) => (
           <div
-            key={index}
+            key={user.rank}
             className={`${styles.podiumColumn} ${
-              index === 1
+              user.rank === 1
                 ? styles.firstPlace
-                : index === 0
+                : user.rank === 2
                 ? styles.secondPlace
                 : styles.thirdPlace
             }`}
@@ -57,7 +159,7 @@ const SolveQuizRank = () => {
               <p className={styles.userName}>{user.name}</p>
               <p className={styles.userScore}>{user.score}점</p>
             </div>
-            <div className={styles.podiumNumber}>{index === 1 ? 1 : index === 0 ? 2 : 3}</div>
+            <div className={styles.podiumNumber}>{user.rank}</div>
           </div>
         ))}
       </div>
@@ -67,9 +169,7 @@ const SolveQuizRank = () => {
         {others.map((user) => (
           <div
             key={user.rank}
-            className={`${styles.rankBox} ${
-              user.name === myScore.name ? styles.myRank : ""
-            }`}
+            className={`${styles.rankBox} ${user.name === myScore.name ? styles.myRank : ""}`}
           >
             <span>{user.rank}</span>
             <span>{user.name}</span>
@@ -82,9 +182,9 @@ const SolveQuizRank = () => {
       <div className={styles.myScore}>
         <h3>내 점수</h3>
         <div className={`${styles.rankBox} ${styles.myRank}`}>
-          <span>{myScore.rank}</span>
+          <span>{myScore.rank ?? "-"}</span>
           <span>{myScore.name}</span>
-          <span>{myScore.score}</span>
+          <span>{typeof myScore.score === "number" ? `${myScore.score}점` : myScore.score}</span>
         </div>
       </div>
 

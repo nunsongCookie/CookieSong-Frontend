@@ -6,16 +6,15 @@ import styles from "./MakeQuizMain.module.css";
 const Frame: FunctionComponent = () => {
   const [userName, setUserName] = useState("");
   const navigate = useNavigate();
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
-  // 유저 이름 입력
   const handleUserNameChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setUserName(event.target.value);
   };
 
-  // 유저, 퀴즈 생성 및 페이지 이동 
   const handleStartQuiz = async () => {
     try{
-      const userResponse = await fetch("http://localhost:8080/api/users", {
+      const userResponse = await fetch(`${apiUrl}/api/users`, {
         method : "POST",
         headers: {
           "Content-Type": "application/json",
@@ -33,7 +32,7 @@ const Frame: FunctionComponent = () => {
       const creatorUserId = userData.id;
 
       // 퀴즈 생성
-      const quizResponse = await fetch("http://localhost:8080/api/quizzes", {
+      const quizResponse = await fetch(`${apiUrl}/api/quizzes`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({creatorUserId: creatorUserId}),
@@ -47,7 +46,9 @@ const Frame: FunctionComponent = () => {
       console.log("Quiz created:", quizData);
 
       // 퀴즈 페이지 이동 
-      navigate(`/make-quiz/${quizData.quizId}`);
+      navigate(`/make-quiz/${quizData.quizId}`, {
+        state: { createDate: userData.createdAt, creator: userData.name },
+      });
     }
     catch(error){
       console.error("Error: ", error);
@@ -67,13 +68,12 @@ const Frame: FunctionComponent = () => {
       </div>
 
       <div className={styles.inputContainer}>
-        {/* <textarea className={styles.textboxName} rows={3} cols={9} /> */}
         <textarea
           className={styles.textboxName}
           rows={3}
           cols={9}
-          value={userName} // 상태와 연결
-          onChange={handleUserNameChange} // 상태 업데이트
+          value={userName}
+          onChange={handleUserNameChange}
           placeholder="이름"
         />
         <div className={styles.titleContainer}>
