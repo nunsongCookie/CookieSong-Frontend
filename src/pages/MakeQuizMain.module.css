@@ -41,8 +41,8 @@ body {
 }
 
 .testContent {
-  width: 70px;
-  border-radius: 30px;
+  min-width: 70px; /* 최소 너비 설정 */
+  border-radius: 20px;
   border: 1px solid #000000;
   background-color: #ffffff;
   display: flex;

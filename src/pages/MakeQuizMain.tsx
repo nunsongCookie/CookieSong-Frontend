@@ -6,7 +6,7 @@ import styles from "./MakeQuizMain.module.css";
 const Frame: FunctionComponent = () => {
   const [userName, setUserName] = useState("");
   const navigate = useNavigate();
-  const apiUrl = process.env.REACT_APP_API_BASE_URL;
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
   const handleUserNameChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setUserName(event.target.value);
@@ -21,6 +21,9 @@ const Frame: FunctionComponent = () => {
         },
         body: JSON.stringify({name: userName}),
       });
+
+      console.log("API Base URL:", apiUrl);
+
 
       if(!userResponse.ok){
         throw new Error("유저 생성에 실패했습니다.");

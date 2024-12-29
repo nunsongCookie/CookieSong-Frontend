@@ -8,7 +8,7 @@ const Frame: FunctionComponent = () => {
   const [userName, setUserName] = useState("");
   const { quizId } = useParams<{ quizId: string }>();
   const [creatorName, setCreatorName] = useState<string>("");
-  const apiUrl = process.env.REACT_APP_API_BASE_URL;
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
   // 유저 이름 입력
   const handleUserNameChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
