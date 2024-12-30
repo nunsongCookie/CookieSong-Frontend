@@ -57,7 +57,7 @@ const SolveQuizWrong: FunctionComponent = () => {
       }
 
       try {
-        const response = await fetch(`${apiUrl}/api/questions`);
+        const response = await fetch(`/api/questions`);
         if (!response.ok) {
           throw new Error("Failed to fetch questions");
         }
@@ -80,7 +80,7 @@ const SolveQuizWrong: FunctionComponent = () => {
       }
 
       try {
-        const response = await fetch(`${apiUrl}/api/choices/${quizId}`);
+        const response = await fetch(`/api/choices/${quizId}`);
         if (!response.ok) {
           throw new Error("Failed to fetch choices");
         }
@@ -103,7 +103,7 @@ const SolveQuizWrong: FunctionComponent = () => {
       }
 
       try {
-        const response = await fetch(`${apiUrl}/api/responses/${responseId}/results`);
+        const response = await fetch(`/api/responses/${responseId}/results`);
         if (!response.ok) {
           throw new Error("Failed to fetch user responses");
         }

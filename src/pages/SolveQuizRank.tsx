@@ -35,7 +35,7 @@ const SolveQuizRank = () => {
   useEffect(() => {
     const fetchRankings = async () => {
       try {
-        const response = await fetch(`${apiUrl}/api/result/${quizId}`);
+        const response = await fetch(`/api/result/${quizId}`);
         const data = await response.json();
 
         if (data.rankings && data.rankings.length > 0) {

@@ -32,7 +32,7 @@ const MakeQuiz: FunctionComponent = () => {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await fetch(`${apiUrl}/api/questions`);
+        const response = await fetch(`/api/questions`);
         if (!response.ok) {
           throw new Error("질문 데이터를 불러오는 데 실패했습니다.");
         }
@@ -96,7 +96,7 @@ const MakeQuiz: FunctionComponent = () => {
     console.log("Submitting choices:", choices);
 
     try {
-      const response = await fetch(`${apiUrl}/api/choices`, {
+      const response = await fetch(`/api/choices`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
