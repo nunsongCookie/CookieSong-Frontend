@@ -14,7 +14,7 @@ const Frame: FunctionComponent = () => {
 
   const handleStartQuiz = async () => {
     try{
-      const userResponse = await fetch(/api/users, {
+      const userResponse = await fetch(`/api/users`, {
         method : "POST",
         headers: {
           "Content-Type": "application/json",
