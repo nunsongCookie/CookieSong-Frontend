@@ -59,7 +59,7 @@ const SolveQuiz: FunctionComponent = () => {
       }
 
       try {
-        const response = await fetch(`${apiUrl}/api/questions`);
+        const response = await fetch(`/api/questions`);
         if (!response.ok) {
           throw new Error("Failed to fetch questions");
         }
@@ -83,7 +83,7 @@ const SolveQuiz: FunctionComponent = () => {
       }
 
       try {
-        const response = await fetch(`${apiUrl}/api/choices/${quizId}`);
+        const response = await fetch(`/api/choices/${quizId}`);
         if (!response.ok) {
           throw new Error("Failed to fetch choices");
         }
@@ -147,7 +147,7 @@ const SolveQuiz: FunctionComponent = () => {
         };
         console.log("Submission Data:", submissionData);
   
-        const response = await fetch(`${apiUrl}/api/answers`, {
+        const response = await fetch(`/api/answers`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

@@ -22,7 +22,7 @@ const Frame: FunctionComponent = () => {
     }
 
     try {
-      const response = await fetch(`${apiUrl}/api/quizzes/${quizId}/creator`);
+      const response = await fetch(`/api/quizzes/${quizId}/creator`);
       if (!response.ok) {
         console.log(quizId);
         throw new Error("사용자 이름을 가져오는 데 실패했습니다.");
@@ -48,7 +48,7 @@ const Frame: FunctionComponent = () => {
     }
     
     try{
-      const userResponse = await fetch(`${apiUrl}/api/responses`, {
+      const userResponse = await fetch(`/api/responses`, {
         method : "POST",
         headers: {
           "Content-Type": "application/json",

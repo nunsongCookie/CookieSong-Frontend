@@ -41,7 +41,7 @@ const SolveQuizResult = () => {
 
       try {
         const response = await fetch(
-          `${apiUrl}/api/responses/${responseId}/results`
+          `/api/responses/${responseId}/results`
         );
 
         if (!response.ok) {
@@ -70,7 +70,7 @@ const SolveQuizResult = () => {
 
       try {
         const response = await fetch(
-          `${apiUrl}/api/responses/${responseId}/submit`
+          `/api/responses/${responseId}/submit`
         );
 
         if (!response.ok) {
@@ -94,7 +94,7 @@ const SolveQuizResult = () => {
     }
 
     try {
-      const response = await fetch(`${apiUrl}/api/quizzes/${quizId}/creator`);
+      const response = await fetch(`/api/quizzes/${quizId}/creator`);
       if (!response.ok) {
         console.log(quizId);
         throw new Error("사용자 이름을 가져오는 데 실패했습니다.");

@@ -22,7 +22,7 @@ const MakeQuizShare: FunctionComponent = () => {
       };
 
       // 백엔드로 요청 보내기
-      const response = await fetch(`${apiUrl}/api/quizzes/share`, {
+      const response = await fetch(`/api/quizzes/share`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

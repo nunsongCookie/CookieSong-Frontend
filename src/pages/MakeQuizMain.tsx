@@ -14,16 +14,13 @@ const Frame: FunctionComponent = () => {
 
   const handleStartQuiz = async () => {
     try{
-      const userResponse = await fetch(`${apiUrl}/api/users`, {
+      const userResponse = await fetch(`/api/users`, {
         method : "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({name: userName}),
       });
-
-      console.log("API Base URL:", apiUrl);
-
 
       if(!userResponse.ok){
         throw new Error("유저 생성에 실패했습니다.");
@@ -35,7 +32,7 @@ const Frame: FunctionComponent = () => {
       const creatorUserId = userData.id;
 
       // 퀴즈 생성
-      const quizResponse = await fetch(`${apiUrl}/api/quizzes`, {
+      const quizResponse = await fetch(`/api/quizzes`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({creatorUserId: creatorUserId}),
