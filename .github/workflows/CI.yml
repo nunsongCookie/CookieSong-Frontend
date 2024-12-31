@@ -4,8 +4,6 @@ name: Deploy WEB
 on:
   push:
     branches: [ "develop" ]
-  pull_request:
-    branches: [ "develop" ]
     
 env:
   IMAGE_TAG: ${{ github.sha }}
@@ -32,6 +30,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+          
     # AWS credentials
       - name: AWS IAM 사용자 설정
         uses: aws-actions/configure-aws-credentials@v4
@@ -57,7 +56,7 @@ jobs:
       - name: Create env file
         run: |
           echo "ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}" > scripts/env.sh
-          echo "ECR_REPOSITORY=${{ secrets.ECR_REPO }}" >> scripts/env.sh
+          echo "ECR_REPOSITORY=${{ secrets.ECR_REPOSITORY }}" >> scripts/env.sh
           echo "IMAGE_TAG=${{ github.sha }}" >> scripts/env.sh
 
       # S3에 스크립트 업로드(code deploy)
@@ -74,4 +73,4 @@ jobs:
           --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
           --deployment-config-name CodeDeployDefault.AllAtOnce \
           --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
-          --s3-location bucket=$S3_BUCKET_NAME,key=$ECR_REPOSITORY/deploy-$IMAGE_TAG.zip,bundleType=zip
+          --s3-location bucket=$S3_BUCKET_NAME,key=$ECR_REPOSITORY,bundleType=zip
