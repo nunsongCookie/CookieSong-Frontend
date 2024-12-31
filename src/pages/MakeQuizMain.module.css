@@ -41,11 +41,10 @@ body {
 }
 
 .testContent {
-  min-width: 70px; /* 최소 너비 설정 */
   border-radius: 20px;
   border: 1px solid #000000;
   background-color: #ffffff;
-  display: flex;
+  display: inline-block; /* 텍스트 길이에 따라 크기가 변하도록 설정 */
   justify-content: center;
   align-items: center;
   padding: 4px 16px;
