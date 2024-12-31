@@ -61,9 +61,14 @@
   font-style: normal;
 }
 
+* {
+  font-family: "Pretendard", sans-serif;
+}
+
 body {
   margin: 0;
   line-height: normal;
+  font-family: "Pretendard", sans-serif;
 }
 :root {
   /* fonts */
@@ -111,4 +116,9 @@ body {
 
   /* Border radiuses */
   --br-11xl: 30px;
+}
+
+h1, h2, h3, h4, h5, h6,
+p, span, button, input, textarea, a {
+  font-family: "Pretendard", sans-serif;
 }
