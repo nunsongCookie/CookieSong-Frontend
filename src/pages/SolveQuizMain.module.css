@@ -42,11 +42,10 @@
     position: absolute;
     top: 10%;
     left: 5%;
-    width: 70px;
     border-radius: 30px;
     border: 1px solid #000000;
     background-color: #ffffff;
-    display: flex;
+    display: inline-block;
     justify-content: center;
     align-items: center;
     padding: 4px 16px;
