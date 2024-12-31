@@ -4,8 +4,6 @@ name: Deploy WEB
 on:
   push:
     branches: [ "develop" ]
-  pull_request:
-    branches: [ "develop" ]
     
 env:
   IMAGE_TAG: ${{ github.sha }}
