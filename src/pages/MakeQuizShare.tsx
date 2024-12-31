@@ -37,10 +37,11 @@ const MakeQuizShare: FunctionComponent = () => {
       const responseData = await response.json();
       const generatedShareUrl = responseData.shareUrl;
 
-      console.log("공유 URL:", generatedShareUrl);
+      const clipboardText = `2024학년도 우정기억능력시험\n${creator} 영역 풀어보기\n${generatedShareUrl}`;
+      await navigator.clipboard.writeText(clipboardText);
 
-      // 클립보드에 링크 복사
-      await navigator.clipboard.writeText(generatedShareUrl);
+      alert("클립보드에 시험 공유 링크가 복사되었습니다!");
+      console.log("공유 URL:", generatedShareUrl);
 
     } catch (error) {
       console.error("Error:", error);
