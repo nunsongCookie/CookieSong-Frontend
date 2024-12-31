@@ -97,8 +97,7 @@ const Frame: FunctionComponent = () => {
             본 모의고사는 한 해를 돌아보는 목적으로 제작되었습니다.
           </p>
           <p className={styles.text}>
-            {creatorName} 님의 한 해가 어땠는지 기억을<br />
-            되짚어 퀴즈를 풀어주세요!
+            {creatorName} 님의 한 해가 어땠는지 기억을 되짚어 퀴즈를 풀어주세요!
           </p>
         </div>
       </div>
