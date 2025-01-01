@@ -90,6 +90,9 @@ const Frame: FunctionComponent = () => {
             각 문항에 정답을 입력하고 친구들에게<br />
             공유해 우정 테스트를 진행해보세요!
           </p>
+          <p className={styles.text}>
+            총 10 문항입니다.
+          </p>
         </div>
       </div>
 

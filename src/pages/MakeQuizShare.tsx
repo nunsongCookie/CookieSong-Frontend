@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import Button from "../components/Button";
 import Header from "../components/Header";
@@ -21,7 +21,6 @@ const MakeQuizShare: FunctionComponent = () => {
         quizId: quizId,
       };
 
-      // 백엔드로 요청 보내기
       const response = await fetch(`/api/quizzes/share`, {
         method: "POST",
         headers: {
@@ -37,17 +36,50 @@ const MakeQuizShare: FunctionComponent = () => {
       const responseData = await response.json();
       const generatedShareUrl = responseData.shareUrl;
 
-      const clipboardText = `2024학년도 우정기억능력시험\n${creator} 영역 풀어보기\n${generatedShareUrl}`;
-      await navigator.clipboard.writeText(clipboardText);
-
-      alert("클립보드에 시험 공유 링크가 복사되었습니다!");
-      console.log("공유 URL:", generatedShareUrl);
-
+      if (window.Kakao && window.Kakao.isInitialized()) {
+        window.Kakao.Share.sendDefault({
+          objectType: "feed",
+          content: {
+            title: "2024학년도 우정기억능력시험",
+            description: `${creator} 영역 풀어보기`,
+            imageUrl: `https://examready2025.site/preview_square.png`,
+            link: {
+              mobileWebUrl: generatedShareUrl,
+              webUrl: generatedShareUrl,
+            },
+          },
+          buttons: [
+            {
+              title: "모의고사 풀기",
+              link: {
+                mobileWebUrl: generatedShareUrl,
+                webUrl: generatedShareUrl,
+              },
+            },
+          ],
+          installTalk: true,
+        });
+      } else {
+        console.error("Kakao SDK가 초기화되지 않았습니다.");
+        alert("카카오톡 공유를 사용할 수 없습니다.");
+      }
     } catch (error) {
       console.error("Error:", error);
       alert("시험 배부에 실패했습니다!");
     }
   };
+
+  useEffect(() => {
+    const handlePopState = () => {
+      navigate("/", { replace: true });
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [navigate]);
 
   return (
     <div className={styles.shareContainer}>

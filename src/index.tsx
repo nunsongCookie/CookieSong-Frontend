@@ -7,6 +7,10 @@ import "./global.css";
 
 const container = document.getElementById("root");
 const root = createRoot(container!);
+const JAVASCRIPT_KEY = import.meta.env.VITE_APP_JAVASCRIPT_KEY;
+
+window.Kakao.init(JAVASCRIPT_KEY);
+window.Kakao.isInitialized();
 
 root.render(
   <BrowserRouter>
