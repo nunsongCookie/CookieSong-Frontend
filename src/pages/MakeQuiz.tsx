@@ -77,6 +77,7 @@ const MakeQuiz: FunctionComponent = () => {
       setTimeout(() => {
         navigate(`/make-quiz-share/${quizId}`, {
           state: { createDate: createDate, creator: creator },
+          replace: true,
         });
       }, 0);
       return;
