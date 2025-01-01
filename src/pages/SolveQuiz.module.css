@@ -75,3 +75,9 @@
   max-width: 400px; /* 고정된 최대 너비 */
   margin-bottom: 24px;
 }
+
+.optionSection div {
+  word-break: break-word; /* 단어가 너무 길 경우 줄바꿈 */
+  white-space: normal; /* 텍스트가 줄바꿈되도록 설정 */
+  overflow-wrap: break-word; /* 줄바꿈 처리 */
+}
