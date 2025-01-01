@@ -71,7 +71,7 @@ const MakeQuizShare: FunctionComponent = () => {
 
   useEffect(() => {
     const handlePopState = () => {
-      navigate("/", { replace: true });
+      navigate("/make-quiz-main", { replace: true });
     };
 
     window.addEventListener("popstate", handlePopState);
