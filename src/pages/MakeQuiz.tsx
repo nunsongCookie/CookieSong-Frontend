@@ -186,6 +186,8 @@ const MakeQuiz: FunctionComponent = () => {
         <QuizButton
           onPrevious={() => {
             if (currentQuestionIndex > 0) {
+              setCorrectAnswer("");
+              setWrongAnswers(["", ""]);
               setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
             } else {
               navigate("/make-quiz-main");
