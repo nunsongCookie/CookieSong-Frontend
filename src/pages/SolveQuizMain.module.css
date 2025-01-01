@@ -73,10 +73,12 @@
   }
   
   .titleContainer {
+    top: 25%;
+    position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 24px 0;
+    margin-top: 24px 0;
   }
   
   .h1 {
@@ -131,15 +133,13 @@
     vertical-align: middle;
   }
   
-  
-  
   .textboxName:focus {
     border-color: #0a70d9;
   }
   
   .buttonWrapper {
     position: absolute;
-    top: 83%;
+    top: 75%;
     left: 0%;
     display: flex;
     justify-content: center;
