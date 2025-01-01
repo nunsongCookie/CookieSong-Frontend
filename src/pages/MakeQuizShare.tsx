@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import Button from "../components/Button";
 import Header from "../components/Header";
@@ -68,6 +68,18 @@ const MakeQuizShare: FunctionComponent = () => {
       alert("시험 배부에 실패했습니다!");
     }
   };
+
+  useEffect(() => {
+    const handlePopState = () => {
+      navigate("/", { replace: true });
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [navigate]);
 
   return (
     <div className={styles.shareContainer}>
