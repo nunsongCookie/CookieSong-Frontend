@@ -35,9 +35,8 @@
     border: 1px solid #000;
     background-color: #f5f5f5;
     width: 300px;
-    top: 0%; /* 원하는 위치로 조정 */
+    margin: 0 auto;
   }
-  
   
   .testContent {
     position: absolute;
@@ -55,8 +54,7 @@
   }
   
   .textContainer {
-    top: 15%;
-    position: absolute;
+    position: static;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -75,12 +73,10 @@
   }
   
   .titleContainer {
-    top: 25%;
-    position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 24px;
+    margin: 24px 0;
   }
   
   .h1 {
@@ -105,8 +101,6 @@
   }
   
   .nameSection {
-    top: 60%;
-    position: absolute;
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -137,13 +131,15 @@
     vertical-align: middle;
   }
   
+  
+  
   .textboxName:focus {
     border-color: #0a70d9;
   }
   
   .buttonWrapper {
     position: absolute;
-    top: 70%;
+    top: 83%;
     left: 0%;
     display: flex;
     justify-content: center;
