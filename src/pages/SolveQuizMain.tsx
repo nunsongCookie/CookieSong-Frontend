@@ -99,6 +99,9 @@ const Frame: FunctionComponent = () => {
           <p className={styles.text}>
             {creatorName} 님의 한 해가 어땠는지 기억을 되짚어 퀴즈를 풀어주세요!
           </p>
+          <p className={styles.text}>
+            총 10 문항입니다.
+          </p>
         </div>
       </div>
 
