@@ -186,6 +186,13 @@ const MakeQuiz: FunctionComponent = () => {
         <QuizButton
           onPrevious={() => {
             if (currentQuestionIndex > 0) {
+              setChoices((prevChoices) => {
+                const updatedChoices = [...prevChoices];
+                const currentQuestionId = questions[currentQuestionIndex]?.questionId;
+
+                return updatedChoices.filter((choice) => choice.questionId !== currentQuestionId);
+              });
+
               setCorrectAnswer("");
               setWrongAnswers(["", ""]);
               setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
