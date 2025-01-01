@@ -10,10 +10,8 @@ const MakeQuizShare: FunctionComponent = () => {
   const { state } = useLocation();
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
-  //const createDate = state?.createDate;
-  //const creator = state?.creator;
-  const createDate = "2024-12-31";
-  const creator = "테스트";
+  const createDate = state?.createDate;
+  const creator = state?.creator;
 
   const handleDistributeExam = async () => {
     console.log("시험 배부하기 버튼 클릭됨!");
@@ -23,8 +21,7 @@ const MakeQuizShare: FunctionComponent = () => {
         quizId: quizId,
       };
 
-      
-      const response = await fetch(`http://localhost:8080/api/quizzes/share`, {
+      const response = await fetch(`/api/quizzes/share`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -40,13 +37,27 @@ const MakeQuizShare: FunctionComponent = () => {
       const generatedShareUrl = responseData.shareUrl;
 
       if (window.Kakao && window.Kakao.isInitialized()) {
-        window.Kakao.Share.sendCustom({
-          templateId: 115884,
-          templateArgs: {
+        window.Kakao.Share.sendDefault({
+          objectType: "feed",
+          content: {
             title: "2024학년도 우정기억능력시험",
             description: `${creator} 영역 풀어보기`,
-            shareUrl: generatedShareUrl,
+            imageUrl: `https://examready2025.site/preview_square.png`,
+            link: {
+              mobileWebUrl: generatedShareUrl,
+              webUrl: generatedShareUrl,
+            },
           },
+          buttons: [
+            {
+              title: "모의고사 풀기",
+              link: {
+                mobileWebUrl: generatedShareUrl,
+                webUrl: generatedShareUrl,
+              },
+            },
+          ],
+          installTalk: true,
         });
       } else {
         console.error("Kakao SDK가 초기화되지 않았습니다.");
