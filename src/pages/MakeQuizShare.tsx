@@ -10,8 +10,10 @@ const MakeQuizShare: FunctionComponent = () => {
   const { state } = useLocation();
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
-  const createDate = state?.createDate;
-  const creator = state?.creator;
+  //const createDate = state?.createDate;
+  //const creator = state?.creator;
+  const createDate = "2024-12-31";
+  const creator = "테스트";
 
   const handleDistributeExam = async () => {
     console.log("시험 배부하기 버튼 클릭됨!");
@@ -21,8 +23,8 @@ const MakeQuizShare: FunctionComponent = () => {
         quizId: quizId,
       };
 
-      // 백엔드로 요청 보내기
-      const response = await fetch(`/api/quizzes/share`, {
+      
+      const response = await fetch(`http://localhost:8080/api/quizzes/share`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -37,12 +39,19 @@ const MakeQuizShare: FunctionComponent = () => {
       const responseData = await response.json();
       const generatedShareUrl = responseData.shareUrl;
 
-      const clipboardText = `2024학년도 우정기억능력시험\n${creator} 영역 풀어보기\n${generatedShareUrl}`;
-      await navigator.clipboard.writeText(clipboardText);
-
-      alert("클립보드에 시험 공유 링크가 복사되었습니다!");
-      console.log("공유 URL:", generatedShareUrl);
-
+      if (window.Kakao && window.Kakao.isInitialized()) {
+        window.Kakao.Share.sendCustom({
+          templateId: 115884,
+          templateArgs: {
+            title: "2024학년도 우정기억능력시험",
+            description: `${creator} 영역 풀어보기`,
+            shareUrl: generatedShareUrl,
+          },
+        });
+      } else {
+        console.error("Kakao SDK가 초기화되지 않았습니다.");
+        alert("카카오톡 공유를 사용할 수 없습니다.");
+      }
     } catch (error) {
       console.error("Error:", error);
       alert("시험 배부에 실패했습니다!");
