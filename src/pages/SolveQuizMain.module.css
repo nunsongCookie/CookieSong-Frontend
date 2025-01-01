@@ -34,8 +34,9 @@
     padding: 16px;
     border: 1px solid #000;
     background-color: #f5f5f5;
-    width: 300px;
-    margin: 0 auto;
+    width: 80%; /* 크기를 조정하여 잘림 방지 */
+    max-width: 400px;
+    margin-bottom: 20px;
   }
   
   .testContent {
@@ -54,7 +55,8 @@
   }
   
   .textContainer {
-    position: static;
+    position: absolute;
+    top: 15%;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -73,7 +75,7 @@
   }
   
   .titleContainer {
-    top: 25%;
+    top: 27%;
     position: absolute;
     display: flex;
     justify-content: center;
@@ -139,7 +141,7 @@
   
   .buttonWrapper {
     position: absolute;
-    top: 75%;
+    top: 65%;
     left: 0%;
     display: flex;
     justify-content: center;
