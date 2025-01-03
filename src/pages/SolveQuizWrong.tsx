@@ -38,20 +38,20 @@ const SolveQuizWrong: FunctionComponent = () => {
   const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
-  const quizId = state?.quizId;
+  const shareKey = state?.shareKey;
   const responseId = state?.responseId;
   const userId = state?.userId;
 
   useEffect(() => {
     if (!responseId) {
       console.error("responseId가 전달되지 않았습니다.");
-      navigate(`/quiz/${quizId}`);
+      navigate(`/quiz/${shareKey}`);
     }
-  }, [responseId, navigate, quizId]);
+  }, [responseId, navigate, shareKey]);
 
   useEffect(() => {
     const fetchQuestions = async () => {
-      if (!quizId) {
+      if (!shareKey) {
         console.error("Quiz ID is null");
         return;
       }
@@ -70,17 +70,17 @@ const SolveQuizWrong: FunctionComponent = () => {
     };
 
     fetchQuestions();
-  }, [quizId]);
+  }, [shareKey]);
 
   useEffect(() => {
     const fetchChoices = async () => {
-      if (!quizId) {
+      if (!shareKey) {
         console.error("Quiz ID is null");
         return;
       }
 
       try {
-        const response = await fetch(`/api/choices/${quizId}`);
+        const response = await fetch(`/api/choices/${shareKey}`);
         if (!response.ok) {
           throw new Error("Failed to fetch choices");
         }
@@ -93,7 +93,7 @@ const SolveQuizWrong: FunctionComponent = () => {
     };
 
     fetchChoices();
-  }, [quizId]);
+  }, [shareKey]);
 
   useEffect(() => {
     const fetchResponses = async () => {
@@ -137,7 +137,7 @@ const SolveQuizWrong: FunctionComponent = () => {
   const handlePrevious = () => {
     if (currentQuestionIndex === 0) {
       navigate(`/solve-quiz-result/${responseId}`, {
-        state: { responseId, quizId, userId },
+        state: { responseId, shareKey, userId },
       });
     } else {
       setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
@@ -147,7 +147,7 @@ const SolveQuizWrong: FunctionComponent = () => {
   const handleNext = () => {
     if (currentQuestionIndex === questions.length - 1) {
       navigate(`/solve-quiz-result/${responseId}`, {
-        state: { responseId, quizId, userId },
+        state: { responseId, shareKey, userId },
       });
     } else {
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);

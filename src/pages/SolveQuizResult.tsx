@@ -23,7 +23,7 @@ const SolveQuizResult = () => {
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
   const responseId = state?.responseId;
-  const quizId = state?.quizId;
+  const shareKey = state?.shareKey;
   const userId = state?.userId;
 
   const [results, setResults] = useState<Result[]>([]);
@@ -88,15 +88,14 @@ const SolveQuizResult = () => {
   }, [responseId]);
 
   const fetchCreatorName = async () => {
-    if (!quizId) {
-      console.error("quizId가 없습니다.");
+    if (!shareKey) {
+      console.error("shareKey가 없습니다.");
       return;
     }
 
     try {
-      const response = await fetch(`/api/quizzes/${quizId}/creator`);
+      const response = await fetch(`/api/quizzes/${shareKey}/creator`);
       if (!response.ok) {
-        console.log(quizId);
         throw new Error("사용자 이름을 가져오는 데 실패했습니다.");
       }
 
@@ -110,17 +109,17 @@ const SolveQuizResult = () => {
 
   useEffect(() => {
     fetchCreatorName();
-  }, [quizId]);
+  }, [shareKey]);
 
   const handleViewRank = () => {
-    navigate(`/solve-quiz-rank/${quizId}`, {
-      state: { responseId: responseId, quizId: quizId, userId: userId},
+    navigate(`/solve-quiz-rank/${shareKey}`, {
+      state: { responseId: responseId, shareKey: shareKey, userId: userId},
     });
   };
 
   const handleViewWrong = () => {
     navigate(`/solve-quiz-wrong/${responseId}`, {
-      state: { responseId: responseId, quizId: quizId, userId: userId},
+      state: { responseId: responseId, shareKey: shareKey, userId: userId},
     });
   };
 

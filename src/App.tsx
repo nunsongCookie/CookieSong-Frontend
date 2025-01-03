@@ -15,12 +15,12 @@ function App() {
       <Route path="/" element={<MakeQuizMain />} />
       <Route path="/health" element={<HealthCheck />} />
       <Route path="/make-quiz-main" element={<MakeQuizMain />} />
-      <Route path="/make-quiz/:quizId" element={<MakeQuiz />} />
-      <Route path="/make-quiz-share/:quizId" element={<MakeQuizShare />} />
-      <Route path="/quiz/:quizId" element={<SolveQuizMain />} />
-      <Route path="/solve-quiz/:quizId" element={<SolveQuiz />} />
+      <Route path="/make-quiz" element={<MakeQuiz />} />
+      <Route path="/make-quiz-share/:shareKey" element={<MakeQuizShare />} />
+      <Route path="/quiz/:shareKey" element={<SolveQuizMain />} />
+      <Route path="/solve-quiz/:shareKey" element={<SolveQuiz />} />
       <Route path="/solve-quiz-result/:responseId" element={<SolveQuizResult />} />
-      <Route path="/solve-quiz-rank/:quizId" element={<SolveQuizRank />} />
+      <Route path="/solve-quiz-rank/:shareKey" element={<SolveQuizRank />} />
       <Route path="/solve-quiz-wrong/:responseId" element={<SolveQuizWrong />} />
     </Routes>
   );

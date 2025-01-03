@@ -21,7 +21,7 @@ const MakeQuiz: FunctionComponent = () => {
   const [choices, setChoices] = useState<Choice[]>([]);
   const [correctAnswer, setCorrectAnswer] = useState("");
   const [wrongAnswers, setWrongAnswers] = useState<string[]>(["", ""]);
-  const { quizId } = useParams<{ quizId: string }>();
+  const { shareKey } = useParams<{ shareKey: string }>();
   const { state } = useLocation();
   const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
@@ -75,7 +75,7 @@ const MakeQuiz: FunctionComponent = () => {
 
     if (currentQuestionIndex === questions.length - 1) {
       setTimeout(() => {
-        navigate(`/make-quiz-share/${quizId}`, {
+        navigate(`/make-quiz-share/${shareKey}`, {
           state: { createDate: createDate, creator: creator },
           replace: true,
         });
@@ -89,19 +89,18 @@ const MakeQuiz: FunctionComponent = () => {
   };
 
   const submitChoices = async () => {
-    if (!quizId) {
+    if (!shareKey) {
       console.error("Quiz Id is null");
-      alert("퀴즈 ID가 없습니다.");
+      alert("ShareKey가 없습니다.");
       return;
     }
-    console.log("Submitting choices:", choices);
 
     try {
       const response = await fetch(`/api/choices`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          quizId: Number(quizId),
+          shareKey: Number(shareKey),
           choices,
         }),
       });
@@ -110,7 +109,6 @@ const MakeQuiz: FunctionComponent = () => {
         throw new Error("보기 저장에 실패했습니다.");
       }
 
-      console.log("보기 저장 완료");
     } catch (error) {
       console.error("보기 저장 중 오류 발생 : ", error);
     }

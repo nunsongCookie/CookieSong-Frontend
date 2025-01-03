@@ -15,7 +15,7 @@ const SolveQuizRank = () => {
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
   const responseId = state?.responseId;
-  const quizId = state?.quizId;
+  const shareKey = state?.shareKey;
   const userId = state?.userId;
 
   const [top3, setTop3] = useState<User[]>([
@@ -35,7 +35,7 @@ const SolveQuizRank = () => {
   useEffect(() => {
     const fetchRankings = async () => {
       try {
-        const response = await fetch(`/api/result/${quizId}`);
+        const response = await fetch(`/api/result/${shareKey}`);
         const data = await response.json();
 
         if (data.rankings && data.rankings.length > 0) {
@@ -114,17 +114,14 @@ const SolveQuizRank = () => {
     };
 
     fetchRankings();
-  }, [quizId, responseId, userId]);
+  }, [shareKey, responseId, userId]);
 
   useEffect(() => {
-    console.log("Top 3:", top3);
-    console.log("Others:", others);
-    console.log("My Score:", myScore);
   }, [top3, others, myScore]);
 
   const handleBack = () => {
     navigate(`/solve-quiz-result/${responseId}`, {
-      state: { responseId: responseId, quizId: quizId, userId: userId },
+      state: { responseId: responseId, shareKey: shareKey, userId: userId },
     });
   };
 

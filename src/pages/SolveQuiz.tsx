@@ -35,7 +35,7 @@ const SolveQuiz: FunctionComponent = () => {
   const [answers, setAnswers] = useState<
     { questionId: number; selectedChoiceId: number }[]
   >([]);
-  const { quizId } = useParams<{ quizId: string }>();
+  const { shareKey } = useParams<{ shareKey: string }>();
   const { state } = useLocation();
   const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
@@ -46,15 +46,15 @@ const SolveQuiz: FunctionComponent = () => {
   useEffect(() => {
     if (!responseId) {
       console.error("responseId가 전달되지 않았습니다.");
-      navigate(`/quiz/${quizId}`);
+      navigate(`/quiz/${shareKey}`);
     }
-  }, [responseId, navigate, quizId]);
+  }, [responseId, navigate, shareKey]);
 
   // 문제를 가져오기
   useEffect(() => {
     const fetchQuestions = async () => {
-      if (!quizId) {
-        console.error("Quiz ID is null");
+      if (!shareKey) {
+        console.error("shareKey is null");
         return;
       }
 
@@ -72,18 +72,18 @@ const SolveQuiz: FunctionComponent = () => {
     };
 
     fetchQuestions();
-  }, [quizId]);
+  }, [shareKey]);
 
   // 선택지 가져오기
   useEffect(() => {
     const fetchChoices = async () => {
-      if (!quizId) {
+      if (!shareKey) {
         console.error("Quiz ID is null");
         return;
       }
 
       try {
-        const response = await fetch(`/api/choices/${quizId}`);
+        const response = await fetch(`/api/choices/${shareKey}`);
         if (!response.ok) {
           throw new Error("Failed to fetch choices");
         }
@@ -96,7 +96,7 @@ const SolveQuiz: FunctionComponent = () => {
     };
 
     fetchChoices();
-  }, [quizId]);
+  }, [shareKey]);
 
   // 현재 질문에 해당하는 선택지 필터링
   useEffect(() => {
@@ -117,7 +117,7 @@ const SolveQuiz: FunctionComponent = () => {
 
   const handlePrevious = () => {
     if (currentQuestionIndex === 0) {
-      navigate(`/quiz/${quizId}`);
+      navigate(`/quiz/${shareKey}`);
     } else {
       setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
       setSelectedOption(null);
@@ -139,13 +139,12 @@ const SolveQuiz: FunctionComponent = () => {
       try {
         const submissionData = {
           responseId,
-          quizId: Number(quizId),
+          shareKey: Number(shareKey),
           answers: [
             ...answers,
             { questionId: questions[currentQuestionIndex].questionId, selectedChoiceId: selectedOption },
           ],
         };
-        console.log("Submission Data:", submissionData);
   
         const response = await fetch(`/api/answers`, {
           method: "POST",
@@ -161,10 +160,8 @@ const SolveQuiz: FunctionComponent = () => {
           throw new Error("응답 제출에 실패했습니다.");
         }
   
-        console.log("Answers submitted successfully");
-        console.log(userId);
         navigate(`/solve-quiz-result/${responseId}`, {
-          state: { responseId: responseId, quizId: quizId, userId: userId },
+          state: { responseId: responseId, shareKey: shareKey, userId: userId },
         });
       } catch (error) {
         console.error("Error submitting answers:", error);
