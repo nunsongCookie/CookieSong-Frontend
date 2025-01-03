@@ -6,7 +6,7 @@ import styles from "./MakeQuizShare.module.css";
 
 const MakeQuizShare: FunctionComponent = () => {
   const navigate = useNavigate();
-  const { quizId } = useParams();
+  const { shareKey } = useParams();
   const { state } = useLocation();
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
@@ -14,11 +14,10 @@ const MakeQuizShare: FunctionComponent = () => {
   const creator = state?.creator;
 
   const handleDistributeExam = async () => {
-    console.log("시험 배부하기 버튼 클릭됨!");
 
     try {
       const requestData = {
-        quizId: quizId,
+        shareKey: shareKey,
       };
 
       const response = await fetch(`/api/quizzes/share`, {

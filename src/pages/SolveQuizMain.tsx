@@ -6,7 +6,7 @@ import styles from "./SolveQuizMain.module.css";
 const Frame: FunctionComponent = () => {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("");
-  const { quizId } = useParams<{ quizId: string }>();
+  const { shareKey } = useParams<{ shareKey: string }>();
   const [creatorName, setCreatorName] = useState<string>("");
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
@@ -16,15 +16,14 @@ const Frame: FunctionComponent = () => {
   };
 
   const fetchCreatorName = async () => {
-    if (!quizId) {
-      console.error("quizId가 없습니다.");
+    if (!shareKey) {
+      console.error("shareKey가 없습니다.");
       return;
     }
 
     try {
-      const response = await fetch(`/api/quizzes/${quizId}/creator`);
+      const response = await fetch(`/api/quizzes/${shareKey}/creator`);
       if (!response.ok) {
-        console.log(quizId);
         throw new Error("사용자 이름을 가져오는 데 실패했습니다.");
       }
 
@@ -38,7 +37,7 @@ const Frame: FunctionComponent = () => {
 
   useEffect(() => {
     fetchCreatorName();
-  }, [quizId]);
+  }, [shareKey]);
 
   // 유저 생성
   const handleStartQuiz = async () => {
@@ -53,7 +52,7 @@ const Frame: FunctionComponent = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({quizId: quizId, userName: userName}),
+        body: JSON.stringify({shareKey: shareKey, userName: userName}),
       });
 
       if(!userResponse.ok){
@@ -61,12 +60,9 @@ const Frame: FunctionComponent = () => {
       }
 
       const userData = await userResponse.json();
-      console.log("User created:", userData);
-      console.log(userData.id)
-      console.log(userData.responseUserId)
 
       // 퀴즈 페이지 이동 
-      navigate(`/solve-quiz/${quizId}`, {
+      navigate(`/solve-quiz/${shareKey}`, {
         state: { responseId: userData.id, userId: userData.responseUserId },
       });
     }

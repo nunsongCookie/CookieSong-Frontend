@@ -27,8 +27,6 @@ const Frame: FunctionComponent = () => {
       }
 
       const userData = await userResponse.json();
-      console.log("User created:", userData);
-
       const creatorUserId = userData.id;
 
       // 퀴즈 생성
@@ -43,10 +41,9 @@ const Frame: FunctionComponent = () => {
       }
 
       const quizData = await quizResponse.json();
-      console.log("Quiz created:", quizData);
 
       // 퀴즈 페이지 이동 
-      navigate(`/make-quiz/${quizData.quizId}`, {
+      navigate(`/make-quiz/${quizData.shareKey}`, {
         state: { createDate: userData.createdAt, creator: userData.name },
       });
     }
