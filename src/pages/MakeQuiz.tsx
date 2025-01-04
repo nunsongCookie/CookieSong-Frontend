@@ -96,8 +96,6 @@ const MakeQuiz: FunctionComponent = () => {
     }
 
     try {
-      console.log("Submitting choices:", { shareKey, choices });
-
       const response = await fetch(`/api/choices`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
