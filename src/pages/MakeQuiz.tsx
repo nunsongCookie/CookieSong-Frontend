@@ -28,7 +28,7 @@ const MakeQuiz: FunctionComponent = () => {
 
   const createDate = state?.createDate;
   const creator = state?.creator;
-
+  
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
@@ -90,7 +90,7 @@ const MakeQuiz: FunctionComponent = () => {
 
   const submitChoices = async () => {
     if (!shareKey) {
-      console.error("Quiz Id is null");
+      console.error("ShareKey is null");
       alert("ShareKey가 없습니다.");
       return;
     }
@@ -100,7 +100,7 @@ const MakeQuiz: FunctionComponent = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          shareKey: Number(shareKey),
+          shareKey: shareKey,
           choices,
         }),
       });
