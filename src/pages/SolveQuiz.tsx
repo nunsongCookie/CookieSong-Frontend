@@ -139,7 +139,7 @@ const SolveQuiz: FunctionComponent = () => {
       try {
         const submissionData = {
           responseId,
-          shareKey: Number(shareKey),
+          shareKey: shareKey,
           answers: [
             ...answers,
             { questionId: questions[currentQuestionIndex].questionId, selectedChoiceId: selectedOption },
