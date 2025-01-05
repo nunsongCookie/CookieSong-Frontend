@@ -30,7 +30,7 @@ const SolveQuizRank = () => {
     { rank: 6, name: "참여자 없음", score: "-" },
   ]);
 
-  const [myScore, setMyScore] = useState<User>({ rank: undefined, name: "", score: "-" });
+  const [myScore, setMyScore] = useState<User | null>(null);
 
   useEffect(() => {
     const fetchRankings = async () => {
@@ -69,60 +69,30 @@ const SolveQuizRank = () => {
                   };
             });
 
-          const myData = sortedRankings.find((user: any) => user.userId === userId) || {
-            rank: "-",
-            name: "참여자 없음",
-            score: "-",
-          };
+          const myData = sortedRankings.find((user: any) => user.userId === userId) || null;
 
           setTop3(topRankers);
           setOthers(otherRankers);
-          setMyScore({
-            rank: myData.rank,
-            name: myData.userName || "참여자 없음",
-            score: myData.score,
-          });
-        } else {
-          // 데이터가 비어 있을 경우 초기 상태 유지
-          setTop3([
-            { name: "참여자 없음", score: "-", rank: 1 },
-            { name: "참여자 없음", score: "-", rank: 2 },
-            { name: "참여자 없음", score: "-", rank: 3 },
-          ]);
-          setOthers([
-            { rank: 4, name: "참여자 없음", score: "-" },
-            { rank: 5, name: "참여자 없음", score: "-" },
-            { rank: 6, name: "참여자 없음", score: "-" },
-          ]);
-          setMyScore({ rank: undefined, name: "참여자 없음", score: "-" });
+          setMyScore(
+            myData
+              ? {
+                  rank: myData.rank,
+                  name: myData.userName,
+                  score: myData.score,
+                }
+              : null
+          );
         }
       } catch (error) {
         console.error("Failed to fetch rankings:", error);
-        // 에러 발생 시 초기 상태 유지
-        setTop3([
-          { name: "참여자 없음", score: "-", rank: 1 },
-          { name: "참여자 없음", score: "-", rank: 2 },
-          { name: "참여자 없음", score: "-", rank: 3 },
-        ]);
-        setOthers([
-          { rank: 4, name: "참여자 없음", score: "-" },
-          { rank: 5, name: "참여자 없음", score: "-" },
-          { rank: 6, name: "참여자 없음", score: "-" },
-        ]);
-        setMyScore({ rank: undefined, name: "참여자 없음", score: "-" });
       }
     };
 
     fetchRankings();
   }, [shareKey, responseId, userId]);
 
-  useEffect(() => {
-  }, [top3, others, myScore]);
-
   const handleBack = () => {
-    navigate(`/solve-quiz-result/${responseId}`, {
-      state: { responseId: responseId, shareKey: shareKey, userId: userId },
-    });
+    navigate(`/quiz/${shareKey}`);
   };
 
   const handleCreateQuiz = () => {
@@ -166,7 +136,7 @@ const SolveQuizRank = () => {
         {others.map((user) => (
           <div
             key={user.rank}
-            className={`${styles.rankBox} ${user.name === myScore.name ? styles.myRank : ""}`}
+            className={`${styles.rankBox} ${user.name === myScore?.name ? styles.myRank : ""}`}
           >
             <span>{user.rank}</span>
             <span>{user.name}</span>
@@ -178,11 +148,15 @@ const SolveQuizRank = () => {
       {/* My Score */}
       <div className={styles.myScore}>
         <h3>내 점수</h3>
-        <div className={`${styles.rankBox} ${styles.myRank}`}>
-          <span>{myScore.rank ?? "-"}</span>
-          <span>{myScore.name}</span>
-          <span>{typeof myScore.score === "number" ? `${myScore.score}점` : myScore.score}</span>
-        </div>
+        {myScore ? (
+          <div className={`${styles.rankBox} ${styles.myRank}`}>
+            <span>{myScore.rank ?? "-"}</span>
+            <span>{myScore.name}</span>
+            <span>{typeof myScore.score === "number" ? `${myScore.score}점` : myScore.score}</span>
+          </div>
+        ) : (
+          <p>아직 퀴즈에 참여하지 않으셨습니다</p>
+        )}
       </div>
 
       {/* Button */}

@@ -39,6 +39,12 @@ const Frame: FunctionComponent = () => {
     fetchCreatorName();
   }, [shareKey]);
 
+  const handleViewRank = () => {
+    navigate(`/solve-quiz-rank/${shareKey}`, {
+      state: { shareKey: shareKey },
+    });
+  };
+
   // 유저 생성
   const handleStartQuiz = async () => {
     if (!userName.trim()) {
@@ -84,7 +90,7 @@ const Frame: FunctionComponent = () => {
       </div>
 
       <div className={styles.titleContainer}>
-        <h1 className={styles.h1}>{creatorName} 영역</h1>
+        <h1 className={styles.h1}>최은소 영역</h1>
       </div>
 
       <div className={styles.testContainerInner}>
@@ -93,7 +99,7 @@ const Frame: FunctionComponent = () => {
             본 모의고사는 한 해를 돌아보는 목적으로 제작되었습니다.
           </p>
           <p className={styles.text}>
-            {creatorName} 님의 한 해가 어땠는지 기억을 되짚어 퀴즈를 풀어주세요!
+            최은소 님의 한 해가 어땠는지 기억을 되짚어 퀴즈를 풀어주세요!
           </p>
           <p className={styles.text}>
             총 10 문항입니다.
@@ -113,7 +119,8 @@ const Frame: FunctionComponent = () => {
       </section>
 
       <section className={styles.buttonWrapper}>
-        <Button text="연말 모의고사 풀어보기" onClick={handleStartQuiz} />
+        <Button text="모의고사 풀기" onClick={handleStartQuiz} />
+        <Button text="등수 확인" onClick={handleViewRank} />
       </section>
     </div>
   );
