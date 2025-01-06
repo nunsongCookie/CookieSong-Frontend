@@ -211,7 +211,7 @@ const SolveQuizResult = () => {
 
       {/* Report Title */}
       <div className={styles.reportTitle}>
-        2024학년도 우정기억능력시험<br />
+        2025학년도 우정기억능력시험<br />
         성적 통지표
       </div>
 
