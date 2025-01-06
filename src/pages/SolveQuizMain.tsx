@@ -85,8 +85,8 @@ const Frame: FunctionComponent = () => {
       </div>
 
       <div className={styles.textContainer}>
-        <p className={styles.title}>2024학년도 우정기억능력시험</p>
-        <p className={styles.title}>연말 모의평가 문제지</p>
+        <p className={styles.title}>2025학년도 우정기억능력시험</p>
+        <p className={styles.title}>연초초 모의평가 문제지</p>
       </div>
 
       <div className={styles.titleContainer}>

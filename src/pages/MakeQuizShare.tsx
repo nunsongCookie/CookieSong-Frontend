@@ -39,7 +39,7 @@ const MakeQuizShare: FunctionComponent = () => {
         window.Kakao.Share.sendDefault({
           objectType: "feed",
           content: {
-            title: "2024학년도 우정기억능력시험",
+            title: "2025학년도 우정기억능력시험",
             description: `${creator} 영역 풀어보기`,
             imageUrl: `https://examready2025.site/preview_square.png`,
             link: {
