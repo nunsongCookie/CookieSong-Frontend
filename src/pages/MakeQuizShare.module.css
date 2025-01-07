@@ -4,6 +4,8 @@
     align-items: center;
     justify-content: space-between;
     height: 100vh;
+    height: -webkit-fill-available;
+    height: fill-available;
     padding: 16px;
     box-sizing: border-box;
     background-color: #f3f3f3;

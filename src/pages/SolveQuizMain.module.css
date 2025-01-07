@@ -8,6 +8,8 @@
     font-family: "Pretendard", sans-serif;
     background-color: #f3f3f3;
     height: 100vh;
+    height: -webkit-fill-available;
+    height: fill-available;
     overflow: hidden;
   }
   
