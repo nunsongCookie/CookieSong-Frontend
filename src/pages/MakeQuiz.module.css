@@ -7,6 +7,8 @@
   max-width: 400px;
   margin: 0 auto;
   height: 100vh;
+  height: -webkit-fill-available;
+  height: fill-available;
   background-color: #f3f3f3;
   padding: 16px;
   box-sizing: border-box;
