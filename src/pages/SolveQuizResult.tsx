@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import Button from "../components/Button";
 import styles from "./SolveQuizResult.module.css";
@@ -111,15 +111,38 @@ const SolveQuizResult = () => {
     fetchCreatorName();
   }, [shareKey]);
 
+  useEffect(() => {
+    const handlePopState = () => {
+      navigate(`/solve-quiz-main/${shareKey}`, {
+        state: { responseId: responseId, shareKey: shareKey, userId: userId },
+        replace: true,
+      });
+    };
+
+    const isHandlerRegistered = useRef(false);
+
+    if (!isHandlerRegistered.current) {
+      window.addEventListener("popstate", handlePopState);
+      isHandlerRegistered.current = true;
+    }
+
+    return () => {
+      if (isHandlerRegistered.current) {
+        window.removeEventListener("popstate", handlePopState);
+        isHandlerRegistered.current = false;
+      }
+    };
+  }, [navigate, shareKey, responseId, userId]);
+
   const handleViewRank = () => {
     navigate(`/solve-quiz-rank/${shareKey}`, {
-      state: { responseId: responseId, shareKey: shareKey, userId: userId},
+      state: { responseId: responseId, shareKey: shareKey, userId: userId },
     });
   };
 
   const handleViewWrong = () => {
     navigate(`/solve-quiz-wrong/${responseId}`, {
-      state: { responseId: responseId, shareKey: shareKey, userId: userId},
+      state: { responseId: responseId, shareKey: shareKey, userId: userId },
     });
   };
 
@@ -130,21 +153,6 @@ const SolveQuizResult = () => {
       </div>
     );
   }
-
-  useEffect(() => {
-    const handlePopState = () => {
-      navigate(`/solve-quiz-main/${shareKey}`, {
-        state: { responseId: responseId, shareKey: shareKey, userId: userId},
-        replace: true
-      });
-    };
-
-    window.addEventListener("popstate", handlePopState);
-
-    return () => {
-      window.removeEventListener("popstate", handlePopState);
-    };
-  }, [navigate]);
 
   // 결과를 반으로 나누기
   const firstHalf = results.slice(0, 5);
