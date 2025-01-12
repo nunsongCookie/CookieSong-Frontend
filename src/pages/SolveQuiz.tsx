@@ -119,6 +119,11 @@ const SolveQuiz: FunctionComponent = () => {
     if (currentQuestionIndex === 0) {
       navigate(`/quiz/${shareKey}`);
     } else {
+      setAnswers((prevAnswers) => {
+        const updatedAnswers = [...prevAnswers];
+        updatedAnswers.pop(); // 마지막으로 저장된 데이터를 삭제
+        return updatedAnswers;
+      });
       setCurrentQuestionIndex((prevIndex) => prevIndex - 1);
       setSelectedOption(null);
     }
@@ -129,12 +134,12 @@ const SolveQuiz: FunctionComponent = () => {
       alert("옵션을 선택해주세요.");
       return;
     }
-  
+
     setAnswers((prevAnswers) => [
       ...prevAnswers,
       { questionId: questions[currentQuestionIndex].questionId, selectedChoiceId: selectedOption },
     ]);
-  
+
     if (currentQuestionIndex === questions.length - 1) {
       try {
         const submissionData = {
@@ -145,7 +150,7 @@ const SolveQuiz: FunctionComponent = () => {
             { questionId: questions[currentQuestionIndex].questionId, selectedChoiceId: selectedOption },
           ],
         };
-  
+
         const response = await fetch(`/api/answers`, {
           method: "POST",
           headers: {
@@ -153,13 +158,13 @@ const SolveQuiz: FunctionComponent = () => {
           },
           body: JSON.stringify(submissionData),
         });
-  
+
         if (!response.ok) {
           const errorText = await response.text();
           console.error("Server Response:", errorText);
           throw new Error("응답 제출에 실패했습니다.");
         }
-  
+
         navigate(`/solve-quiz-result/${responseId}`, {
           state: { responseId: responseId, shareKey: shareKey, userId: userId },
         });
