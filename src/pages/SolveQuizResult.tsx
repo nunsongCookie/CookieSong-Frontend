@@ -131,6 +131,21 @@ const SolveQuizResult = () => {
     );
   }
 
+  useEffect(() => {
+    const handlePopState = () => {
+      navigate(`/solve-quiz-main/${shareKey}`, {
+        state: { responseId: responseId, shareKey: shareKey, userId: userId},
+        replace: true
+      });
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [navigate]);
+
   // 결과를 반으로 나누기
   const firstHalf = results.slice(0, 5);
   const secondHalf = results.slice(5, 10);
