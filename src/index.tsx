@@ -58,15 +58,7 @@ const InAppBrowserHandler: React.FC = () => {
     ) {
       if (userAgent.match(/iphone|ipad|ipod/i)) {
         // iOS devices: Display Safari open instructions
-
-        const safariUrl = `x-web-search://?${encodeURIComponent(targetUrl)}`;
-        document.body.innerHTML = `
-          <div style="font-family: 'Pretendard', sans-serif; text-align: center; padding: 20px;">
-            <h2>인앱브라우저 호환문제로 인해<br />Safari로 접속해야합니다.</h2>
-            <p>아래 버튼을 눌러 Safari를 실행해주세요.<br />Safari가 열리면, 주소창을 길게 터치한 뒤,<br />'붙여놓기 및 이동'을 누르면<br />정상적으로 이용할 수 있습니다.</p>
-            <button onclick="(${inAppBrowserOut})()" style="padding: 10px 20px; background-color: #31408E; color: #fff; border: none; border-radius: 4px; font-size: 16px;">Safari로 열기</button>
-          </div>
-        `;
+        window.location.href = "x-safari-https://" + targetUrl.replace(/^(http|https)?:\/\/+/i, ""); 
       } else {
         // Android devices: Force open in Chrome
         window.location.href = `intent://${targetUrl.replace(/https?:\/\//i, "")}#Intent;scheme=http;package=com.android.chrome;end`;
