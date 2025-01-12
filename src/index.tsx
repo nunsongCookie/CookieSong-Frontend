@@ -39,6 +39,13 @@ const InAppBrowserHandler: React.FC = () => {
     if (userAgent.match(/kakaotalk/i)) {
       // KakaoTalk external browser
       window.location.href = `kakaotalk://web/openExternal?url=${encodeURIComponent(targetUrl)}`;
+      setTimeout(() => {
+        if (navigator.userAgent.match(/iphone|ipad|ipod/i)) {
+          location.href = "kakaoweb://closeBrowser"; // iOS에서 카카오 인앱 브라우저 닫기
+        } else {
+          location.href = "kakaotalk://inappbrowser/close"; // Android에서 카카오 인앱 브라우저 닫기
+        }
+      }, 1000);
     } else if (userAgent.match(/line/i)) {
       // Line external browser
       window.location.href = targetUrl.includes("?")
@@ -51,6 +58,8 @@ const InAppBrowserHandler: React.FC = () => {
     ) {
       if (userAgent.match(/iphone|ipad|ipod/i)) {
         // iOS devices: Display Safari open instructions
+
+        const safariUrl = `x-web-search://?${encodeURIComponent(targetUrl)}`;
         document.body.innerHTML = `
           <div style="font-family: 'Pretendard', sans-serif; text-align: center; padding: 20px;">
             <h2>인앱브라우저 호환문제로 인해<br />Safari로 접속해야합니다.</h2>
