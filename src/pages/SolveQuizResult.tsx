@@ -32,6 +32,9 @@ const SolveQuizResult = () => {
   const [report, setReport] = useState<Report | null>(null);
 
   useEffect(() => {
+    history.replaceState(null, "", `/solve-quiz-result/${responseId}`);
+    history.pushState(null, "", `/quiz/${shareKey}`);
+
     const handlePopState = () => {
       navigate(`/quiz/${shareKey}`, { replace: true });
     };
@@ -41,7 +44,7 @@ const SolveQuizResult = () => {
     return () => {
       window.removeEventListener("popstate", handlePopState);
     };
-  }, [navigate, shareKey]);
+  }, [navigate, responseId, shareKey]);
 
   useEffect(() => {
     const fetchResults = async () => {
