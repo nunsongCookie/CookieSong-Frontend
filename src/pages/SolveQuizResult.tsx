@@ -36,7 +36,9 @@ const SolveQuizResult = () => {
     history.pushState(null, "", `/quiz/${shareKey}`);
 
     const handlePopState = () => {
-      navigate(`/quiz/${shareKey}`, { replace: true });
+      navigate(`/quiz/${shareKey}`, { 
+        state: { shareKey: shareKey },
+        replace: true });
     };
 
     window.addEventListener("popstate", handlePopState);

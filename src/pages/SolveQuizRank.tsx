@@ -92,7 +92,9 @@ const SolveQuizRank = () => {
   }, [shareKey, responseId, userId]);
 
   const handleBack = () => {
-    navigate(`/quiz/${shareKey}`);
+    navigate(`/quiz/${shareKey}`, {
+      state: { shareKey: shareKey },
+    });
   };
 
   const handleCreateQuiz = () => {
