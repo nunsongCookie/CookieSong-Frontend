@@ -31,7 +31,18 @@ const SolveQuizResult = () => {
   const [creatorName, setCreatorName] = useState<string>("");
   const [report, setReport] = useState<Report | null>(null);
 
-  // API 호출로 결과 가져오기
+  useEffect(() => {
+    const handlePopState = () => {
+      navigate(`/quiz/${shareKey}`, { replace: true });
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [navigate, shareKey]);
+
   useEffect(() => {
     const fetchResults = async () => {
       if (!responseId) {
@@ -40,9 +51,7 @@ const SolveQuizResult = () => {
       }
 
       try {
-        const response = await fetch(
-          `/api/responses/${responseId}/results`
-        );
+        const response = await fetch(`/api/responses/${responseId}/results`);
 
         if (!response.ok) {
           throw new Error("결과를 가져오는 데 실패했습니다.");
@@ -69,9 +78,7 @@ const SolveQuizResult = () => {
       }
 
       try {
-        const response = await fetch(
-          `/api/responses/${responseId}/submit`
-        );
+        const response = await fetch(`/api/responses/${responseId}/submit`);
 
         if (!response.ok) {
           throw new Error("성적 통지표를 가져오는 데 실패했습니다.");
@@ -113,13 +120,13 @@ const SolveQuizResult = () => {
 
   const handleViewRank = () => {
     navigate(`/solve-quiz-rank/${shareKey}`, {
-      state: { responseId: responseId, shareKey: shareKey, userId: userId},
+      state: { responseId: responseId, shareKey: shareKey, userId: userId },
     });
   };
 
   const handleViewWrong = () => {
     navigate(`/solve-quiz-wrong/${responseId}`, {
-      state: { responseId: responseId, shareKey: shareKey, userId: userId},
+      state: { responseId: responseId, shareKey: shareKey, userId: userId },
     });
   };
 
@@ -154,11 +161,7 @@ const SolveQuizResult = () => {
                 <th key={`correct1-${index}`}>
                   <div className={styles.imageWrapper}>
                     <img
-                      src={
-                        result.correct
-                          ? "/quiz_true.png"
-                          : "/quiz_false.png"
-                      }
+                      src={result.correct ? "/quiz_true.png" : "/quiz_false.png"}
                       alt={result.correct ? "정답" : "오답"}
                       className={styles.resultImage}
                     />
@@ -183,11 +186,7 @@ const SolveQuizResult = () => {
                 <th key={`correct2-${index}`}>
                   <div className={styles.imageWrapper}>
                     <img
-                      src={
-                        result.correct
-                          ? "/quiz_true.png"
-                          : "/quiz_false.png"
-                      }
+                      src={result.correct ? "/quiz_true.png" : "/quiz_false.png"}
                       alt={result.correct ? "정답" : "오답"}
                       className={styles.resultImage}
                     />
