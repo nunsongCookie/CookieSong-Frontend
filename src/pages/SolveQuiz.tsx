@@ -30,7 +30,7 @@ const SolveQuiz: FunctionComponent = () => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [choices, setChoices] = useState<QuestionChoices[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedOption, setSelectedOption] = useState<number | null>(null); // 선택된 선택지 ID
+  const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [currentChoices, setCurrentChoices] = useState<Choice[]>([]);
   const [answers, setAnswers] = useState<
     { questionId: number; selectedChoiceId: number }[]
@@ -167,6 +167,7 @@ const SolveQuiz: FunctionComponent = () => {
 
         navigate(`/solve-quiz-result/${responseId}`, {
           state: { responseId: responseId, shareKey: shareKey, userId: userId },
+          replace: true,
         });
       } catch (error) {
         console.error("Error submitting answers:", error);
